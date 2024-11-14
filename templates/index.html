@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 
@@ -8,19 +9,19 @@
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}" />
 
   <!-- CSS
 	============================================ -->
-
+    <link rel="stylesheet" href="{% static '' %}" />
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
   <!-- Icon Font CSS -->
-  <link rel="stylesheet" href="assets/css/icons.min.css" />
+  <link rel="stylesheet" href="{% static 'assets/css/icons.min.css' %}" />
   <!-- Plugins CSS -->
-  <link rel="stylesheet" href="assets/css/plugins.css" />
+  <link rel="stylesheet" href="{% static 'assets/css/plugins.css' %}" />
   <!-- Main Style CSS -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
   <!-- Modernizer JS -->
   <!-- <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script> -->
 </head>
@@ -159,7 +160,7 @@
                         </div>
 
                         <div class="shopping-cart-img">
-                          <a href="#"><img alt="" src="assets/img/cart/cart-1.svg" /></a>
+                          <a href="#"><img alt="" src="{% static 'assets/img/cart/cart-1.svg' %}" /></a>
                           <div class="item-close">
                             <a href="#"><i class="sli sli-close"></i></a>
                           </div>
@@ -171,7 +172,7 @@
                           <span>1 x 9,000</span>
                         </div>
                         <div class="shopping-cart-img">
-                          <a href="#"><img alt="" src="assets/img/cart/cart-2.svg" /></a>
+                          <a href="#"><img alt="" src="{% static 'assets/img/cart/cart-2.svg' %}" /></a>
                           <div class="item-close">
                             <a href="#"><i class="sli sli-close"></i></a>
                           </div>
@@ -275,7 +276,7 @@
                         </div>
 
                         <div class="shopping-cart-img">
-                          <a href="#"><img alt="" src="assets/img/cart/cart-1.svg" /></a>
+                          <a href="#"><img alt="" src="{% static 'assets/img/cart/cart-1.svg' %}" /></a>
                           <div class="item-close">
                             <a href="#"><i class="sli sli-close"></i></a>
                           </div>
@@ -287,7 +288,7 @@
                           <span>1 x 9,000</span>
                         </div>
                         <div class="shopping-cart-img">
-                          <a href="#"><img alt="" src="assets/img/cart/cart-2.svg" /></a>
+                          <a href="#"><img alt="" src="{% static 'assets/img/cart/cart-2.svg' %}" /></a>
                           <div class="item-close">
                             <a href="#"><i class="sli sli-close"></i></a>
                           </div>
@@ -468,7 +469,7 @@
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
                 <div class="slider-single-img slider-animated-1">
 
-                  <img class="animated" src="assets/img/slider/1.jfif" alt="" />
+                  <img class="animated" src="{% static 'assets/img/slider/1.jfif' %}" alt="" />
                 </div>
               </div>
             </div>
@@ -495,7 +496,7 @@
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
                 <div class="slider-single-img slider-animated-1">
 
-                  <img class="animated" src="assets/img/slider/2.jfif" alt="" />
+                  <img class="animated" src="{% static 'assets/img/slider/2.jfif' %}" alt="" />
                 </div>
               </div>
             </div>
@@ -509,7 +510,7 @@
         <div class="row">
           <div class="col-lg-4 col-md-4">
             <div class="single-banner mb-30 scroll-zoom">
-              <a href="product-details.html"><img class="animated" src="assets/img/banner/banner-6.png" alt="" /></a>
+              <a href="product-details.html"><img class="animated" src="{% static 'assets/img/banner/banner-6.png' %}" alt="" /></a>
               <div class="banner-content-2 banner-position-5">
                 <h4>زنانه</h4>
               </div>
@@ -517,7 +518,7 @@
           </div>
           <div class="col-lg-4 col-md-4">
             <div class="single-banner mb-30 scroll-zoom">
-              <a href="product-details.html"><img class="animated" src="assets/img/banner/banner-7.png" alt="" /></a>
+              <a href="product-details.html"><img class="animated" src="{% static 'assets/img/banner/banner-7.png' %}" alt="" /></a>
               <div class="banner-content-2 banner-position-5">
                 <h4>جین</h4>
               </div>
@@ -525,7 +526,7 @@
           </div>
           <div class="col-lg-4 col-md-4">
             <div class="single-banner mb-30 scroll-zoom">
-              <a href="product-details.html"><img class="animated" src="assets/img/banner/banner-8.png" alt="" /></a>
+              <a href="product-details.html"><img class="animated" src="{% static 'assets/img/banner/banner-8.png' %}" alt="" /></a>
               <div class="banner-content-2 banner-position-5">
                 <h4>مردانه</h4>
               </div>
@@ -533,7 +534,7 @@
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="single-banner mb-30 scroll-zoom">
-              <a href="product-details.html"><img class="animated" src="assets/img/banner/banner-9.png" alt="" /></a>
+              <a href="product-details.html"><img class="animated" src="{% static 'assets/img/banner/banner-9.png' %}" alt="" /></a>
               <div class="banner-content banner-position-6 text-right">
                 <h3>لورم ایپسوم</h3>
                 <h2>لورم ایپسوم <br />متن</h2>
@@ -543,7 +544,7 @@
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="single-banner mb-30 text-center scroll-zoom">
-              <a href="product-details.html"><img class="animated" src="assets/img/banner/banner-10.png" alt="" /></a>
+              <a href="product-details.html"><img class="animated" src="{% static 'assets/img/banner/banner-10.png' %}" alt="" /></a>
               <div class="banner-content-3 banner-position-7">
                 <h2>لورم ایپسوم متن ساختگی</h2>
                 <a href="product-details.html">فروشگاه</a>
@@ -582,7 +583,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-1.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-1.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -651,7 +652,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-2.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-2.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -716,7 +717,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-3.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-3.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -785,7 +786,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-4.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-4.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -849,7 +850,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-2.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-2.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -918,7 +919,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-5.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-5.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -983,7 +984,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-1.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-1.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1052,7 +1053,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-2.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-2.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1117,7 +1118,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-3.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-3.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1186,7 +1187,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-4.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-4.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1256,7 +1257,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-4.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-4.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1324,7 +1325,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-1.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-1.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1393,7 +1394,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-2.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-2.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1458,7 +1459,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-3.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-3.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1527,7 +1528,7 @@
                 <div class="ht-product-inner">
                   <div class="ht-product-image-wrap">
                     <a href="product-details.html" class="ht-product-image">
-                      <img src="assets/img/product/product-4.svg" alt="Universal Product Style" />
+                      <img src="{% static 'assets/img/product/product-4.svg' %}" alt="Universal Product Style" />
                     </a>
                     <div class="ht-product-action">
                       <ul>
@@ -1592,13 +1593,13 @@
       </div>
     </div>
     
-    <div class="testimonial-area pt-80 pb-95 section-margin-1" style="background-image: url(assets/img/bg/bg-1.jpg);">
+    <div class="testimonial-area pt-80 pb-95 section-margin-1" style="background-image: url({% static 'assets/img/bg/bg-1.jpg' %});">
       <div class="container">
         <div class="row">
           <div class="col-lg-10 ml-auto mr-auto">
             <div class="testimonial-active owl-carousel nav-style-1">
               <div class="single-testimonial text-center">
-                <img src="assets/img/testimonial/testi-1.png" alt="" />
+                <img src="{% static 'assets/img/testimonial/testi-1.png' %}" alt="" />
                 <p>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و
                   متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
@@ -1606,12 +1607,12 @@
                   آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت
                 </p>
                 <div class="client-info">
-                  <img src="assets/img/icon-img/testi.png" alt="" />
+                  <img src="{% static 'assets/img/icon-img/testi.png' %}" alt="" />
                   <h5>لورم ایپسوم</h5>
                 </div>
               </div>
               <div class="single-testimonial text-center">
-                <img src="assets/img/testimonial/testi-2.png" alt="" />
+                <img src="{% static 'assets/img/testimonial/testi-2.png' %}" alt="" />
                 <p>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و
                   متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
@@ -1619,7 +1620,7 @@
                   آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت
                 </p>
                 <div class="client-info">
-                  <img src="assets/img/icon-img/testi.png" alt="" />
+                  <img src="{% static 'assets/img/icon-img/testi.png' %}" alt="" />
                   <h5>لورم ایپسوم</h5>
                 </div>
               </div>
@@ -1645,7 +1646,7 @@
               <div class="ht-product-inner">
                 <div class="ht-product-image-wrap">
                   <a href="product-details.html" class="ht-product-image">
-                    <img src="assets/img/product/product-1.svg" alt="Universal Product Style" />
+                    <img src="{% static 'assets/img/product/product-1.svg' %}" alt="Universal Product Style" />
                   </a>
                   <div class="ht-product-action">
                     <ul>
@@ -1714,7 +1715,7 @@
               <div class="ht-product-inner">
                 <div class="ht-product-image-wrap">
                   <a href="product-details.html" class="ht-product-image">
-                    <img src="assets/img/product/product-2.svg" alt="Universal Product Style" />
+                    <img src="{% static 'assets/img/product/product-2.svg' %}" alt="Universal Product Style" />
                   </a>
                   <div class="ht-product-action">
                     <ul>
@@ -1779,7 +1780,7 @@
               <div class="ht-product-inner">
                 <div class="ht-product-image-wrap">
                   <a href="product-details.html" class="ht-product-image">
-                    <img src="assets/img/product/product-3.svg" alt="Universal Product Style" />
+                    <img src="{% static 'assets/img/product/product-3.svg' %}" alt="Universal Product Style" />
                   </a>
                   <div class="ht-product-action">
                     <ul>
@@ -1848,7 +1849,7 @@
               <div class="ht-product-inner">
                 <div class="ht-product-image-wrap">
                   <a href="product-details.html" class="ht-product-image">
-                    <img src="assets/img/product/product-4.svg" alt="Universal Product Style" />
+                    <img src="{% static 'assets/img/product/product-4.svg' %}" alt="Universal Product Style" />
                   </a>
                   <div class="ht-product-action">
                     <ul>
@@ -1912,7 +1913,7 @@
               <div class="ht-product-inner">
                 <div class="ht-product-image-wrap">
                   <a href="product-details.html" class="ht-product-image">
-                    <img src="assets/img/product/product-2.svg" alt="Universal Product Style" />
+                    <img src="{% static 'assets/img/product/product-2.svg' %}" alt="Universal Product Style" />
                   </a>
                   <div class="ht-product-action">
                     <ul>
@@ -1981,7 +1982,7 @@
         <div class="row">
           <div class="col-lg-6 col-md-6 text-right">
             <div class="single-banner mb-30 scroll-zoom">
-              <a href="product-details.html"><img src="assets/img/banner/banner-4.png" alt="" /></a>
+              <a href="product-details.html"><img src="{% static 'assets/img/banner/banner-4.png' %}" alt="" /></a>
               <div class="banner-content banner-position-3">
                 <h3>لورم ایپسوم</h3>
                 <h2>لورم ایپسوم <br />متن </h2>
@@ -1991,7 +1992,7 @@
           </div>
           <div class="col-lg-6 col-md-6 text-right">
             <div class="single-banner mb-30 scroll-zoom">
-              <a href="product-details.html"><img src="assets/img/banner/banner-5.png" alt="" /></a>
+              <a href="product-details.html"><img src="{% static 'assets/img/banner/banner-5.png' %}" alt="" /></a>
               <div class="banner-content banner-position-4">
                 <h3>لورم ایپسوم</h3>
                 <h2>لورم ایپسوم </h2>
@@ -2009,7 +2010,7 @@
           <div class="col-xl-4 col-lg-4 col-md-4">
             <div class="single-feature text-right mb-40">
               <div class="feature-icon">
-                <img src="assets/img/icon-img/free-shipping.png" alt="" />
+                <img src="{% static 'assets/img/icon-img/free-shipping.png' %}" alt="" />
               </div>
               <div class="feature-content">
                 <h4>لورم ایپسوم</h4>
@@ -2020,7 +2021,7 @@
           <div class="col-xl-4 col-lg-4 col-md-4">
             <div class="single-feature text-right mb-40 pl-50">
               <div class="feature-icon">
-                <img src="assets/img/icon-img/support.png" alt="" />
+                <img src="{% static 'assets/img/icon-img/support.png' %}" alt="" />
               </div>
               <div class="feature-content">
                 <h4>لورم ایپسوم</h4>
@@ -2031,7 +2032,7 @@
           <div class="col-xl-4 col-lg-4 col-md-4">
             <div class="single-feature text-right mb-40">
               <div class="feature-icon">
-                <img src="assets/img/icon-img/security.png" alt="" />
+                <img src="{% static 'assets/img/icon-img/security.png' %}" alt="" />
               </div>
               <div class="feature-content">
                 <h4>لورم ایپسوم</h4>
@@ -2074,7 +2075,7 @@
             </div>
             <div class="col-lg-4 col-md-3 col-12">
               <div class="payment-mathod pb-20">
-                <a href="#"><img src="assets/img/icon-img/payment.png" alt="" /></a>
+                <a href="#"><img src="{% static 'assets/img/icon-img/payment.png' %}" alt="" /></a>
               </div>
             </div>
           </div>
@@ -2177,27 +2178,27 @@
               <div class="col-md-5 col-sm-12 col-xs-12">
                 <div class="tab-content quickview-big-img">
                   <div id="pro-1" class="tab-pane fade show active">
-                    <img src="assets/img/product/quickview-l1.svg" alt="" />
+                    <img src="{% static 'assets/img/product/quickview-l1.svg' %}" alt="" />
                   </div>
                   <div id="pro-2" class="tab-pane fade">
-                    <img src="assets/img/product/quickview-l2.svg" alt="" />
+                    <img src="{% static 'assets/img/product/quickview-l2.svg' %}" alt="" />
                   </div>
                   <div id="pro-3" class="tab-pane fade">
-                    <img src="assets/img/product/quickview-l3.svg" alt="" />
+                    <img src="{% static 'assets/img/product/quickview-l3.svg' %}" alt="" />
                   </div>
                   <div id="pro-4" class="tab-pane fade">
-                    <img src="assets/img/product/quickview-l2.svg" alt="" />
+                    <img src="{% static 'assets/img/product/quickview-l2.svg' %}" alt="" />
                   </div>
                 </div>
                 <!-- Thumbnail Large Image End -->
                 <!-- Thumbnail Image End -->
                 <div class="quickview-wrap mt-15">
                   <div class="quickview-slide-active owl-carousel nav nav-style-2" role="tablist">
-                    <a class="active" data-toggle="tab" href="#pro-1"><img src="assets/img/product/quickview-s1.svg"
+                    <a class="active" data-toggle="tab" href="#pro-1"><img src="{% static 'assets/img/product/quickview-s1.svg' %}"
                         alt="" /></a>
-                    <a data-toggle="tab" href="#pro-2"><img src="assets/img/product/quickview-s2.svg" alt="" /></a>
-                    <a data-toggle="tab" href="#pro-3"><img src="assets/img/product/quickview-s3.svg" alt="" /></a>
-                    <a data-toggle="tab" href="#pro-4"><img src="assets/img/product/quickview-s2.svg" alt="" /></a>
+                    <a data-toggle="tab" href="#pro-2"><img src="{% static 'assets/img/product/quickview-s2.svg' %}" alt="" /></a>
+                    <a data-toggle="tab" href="#pro-3"><img src="{% static 'assets/img/product/quickview-s3.svg' %}" alt="" /></a>
+                    <a data-toggle="tab" href="#pro-4"><img src="{% static 'assets/img/product/quickview-s2.svg' %}" alt="" /></a>
                   </div>
                 </div>
               </div>
@@ -2214,17 +2215,17 @@
 ============================================ -->
 
   <!-- jQuery JS -->
-  <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+  <script src="{% static 'assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
   <!-- Popper JS -->
-  <script src="assets/js/popper.min.js"></script>
+  <script src="{% static 'assets/js/popper.min.js' %}"></script>
   <!-- Bootstrap JS -->
-  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
   <!-- Plugins JS -->
-  <script src="assets/js/plugins.js"></script>
+  <script src="{% static 'assets/js/plugins.js' %}"></script>
   <!-- Ajax Mail -->
-  <script src="assets/js/ajax-mail.js"></script>
+  <script src="{% static 'assets/js/ajax-mail.js' %}"></script>
   <!-- Main JS -->
-  <script src="assets/js/main.js"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
 </body>
 
 </html>
