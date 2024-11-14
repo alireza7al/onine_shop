@@ -1,0 +1,313 @@
+/*-------- 23. My account style ---------*/
+
+.myaccount-tab-menu {
+  flex-direction: column;
+
+  a {
+    border: 1px solid #ccc;
+    border-bottom: none;
+    font-weight: 600;
+    font-size: 13px;
+    display: block;
+    padding: 10px 15px;
+    text-transform: uppercase;
+
+    &:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+
+    &:hover,
+    &.active {
+      background-color: $theme-color;
+      border-color: $theme-color;
+      color: $white;
+    }
+
+    i.fa {
+      font-size: 14px;
+      text-align: center;
+      width: 25px;
+    }
+  }
+}
+
+#myaccountContent {
+  @media #{$xs-layout} {
+    margin-top: 30px;
+  }
+}
+
+.myaccount-content {
+  border: 1px solid #eeeeee;
+  padding: 30px;
+
+  @media #{$xs-layout} {
+    padding: 20px 15px;
+  }
+
+  h3 {
+    font-size: 20px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-weight: 600;
+  }
+
+  .welcome {
+    a {
+      &:hover {
+        color: $theme-color;
+      }
+    }
+
+    strong {
+      font-weight: 600;
+      color: $theme-color;
+    }
+  }
+  fieldset {
+    margin-top: 20px;
+    & legend {
+      font-size: 16px;
+      margin-bottom: 20px;
+      font-weight: 500;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+  .account-details-form {
+    margin-top: 50px;
+    .single-input-item {
+      margin-bottom: 20px;
+      label {
+        font-size: 14px;
+        text-transform: capitalize;
+        display: block;
+        margin: 0 0 5px;
+      }
+      input {
+        border: 1px solid #e8e8e8;
+        height: 50px;
+        background-color: transparent;
+        padding: 2px 20px;
+        color: #1f2226;
+        font-size: 13px;
+        &:focus {
+          border: 1px solid #343538;
+        }
+        &:disabled {
+          background-color: #f6f6f6;
+        }
+      }
+      button {
+        border: none;
+        background-color: $theme-color;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: 9px 25px;
+        color: #fff;
+        font-size: 13px;
+        &:hover {
+          background-color: #1f2226;
+        }
+      }
+    }
+  }
+}
+
+.myaccount-table {
+  white-space: nowrap;
+  font-size: 14px;
+  table,
+  .table {
+    th {
+      padding: 10px;
+      font-weight: 600;
+      background-color: #f8f8f8;
+      border-color: #ccc;
+      border-bottom: 0;
+      color: #1f2226;
+    }
+
+    td {
+      padding: 10px;
+      vertical-align: middle;
+      border-color: #ccc;
+    }
+  }
+}
+
+.saved-message {
+  background-color: #fff;
+  border-top: 3px solid $theme-color;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+.review-wrapper {
+  .single-review {
+    display: flex;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 30px;
+    padding-bottom: 35px;
+    .review-img {
+      flex: 0 0 70px;
+      img {
+        width: 100%;
+      }
+    }
+    .review-content {
+      margin-right: 30px;
+      @media #{$xs-layout} {
+        margin-left: 10px;
+      }
+      p {
+        font-size: 14px;
+        font-style: italic;
+        margin: 0 0 42px;
+        color: #333;
+      }
+      .review-top-wrap {
+        display: flex;
+        justify-content: space-between;
+        .review-name {
+          h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+            position: relative;
+            font-weight: 500;
+            &:after {
+              position: absolute;
+              top: -25px;
+              left: 0;
+              background-color: #343538;
+              width: 60px;
+              height: 1px;
+              content: "";
+            }
+          }
+        }
+        .review-rating {
+          line-height: 1;
+          i {
+            color: #e7a415;
+            font-size: 12px;
+            margin-left: 2px;
+          }
+        }
+      }
+    }
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+  }
+}
+
+.address-content {
+  hr {
+    border-top: 2px solid #ff3535;
+  }
+  button {
+    background-color: #f2f2f2;
+    border: medium none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 13px 30px 14px;
+    text-transform: uppercase;
+    -webkit-transition: all 0.3s ease 0s;
+    -o-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
+  button:hover {
+    background-color: #ff3535;
+    color: #fff;
+  }
+}
+
+.collapse-address-update-content {
+  margin: 20px 0 0;
+  display: none;
+
+  form {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 12px;
+  }
+
+  .tax-select {
+    margin: 0 0 26px;
+    label {
+      color: #242424;
+      font-size: 14px;
+      margin: 0 0 5px;
+    }
+    select {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      background: #fff url("../../img/icon-img/cart.png") no-repeat
+        scroll left 18px center;
+      border: 1px solid #ebebeb;
+      box-shadow: none;
+      color: #242424;
+      font-size: 12px;
+      height: 40px;
+      padding: 0 15px 0 50px;
+      width: 100%;
+      cursor: pointer;
+    }
+    input {
+      background: #fff none repeat scroll 0 0;
+      border: 1px solid #ebebeb;
+      height: 40px;
+      padding-right: 10px;
+      padding-left: 0px;
+    }
+  }
+}
+
+.collapse-address-create-content {
+  margin: 20px 0 0;
+  display: none;
+
+  form {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 12px;
+  }
+
+  .tax-select {
+    margin: 0 0 26px;
+    label {
+      color: #242424;
+      font-size: 14px;
+      margin: 0 0 5px;
+    }
+    select {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      background: #fff url("../../img/icon-img/cart.png") no-repeat
+        scroll left 18px center;
+      border: 1px solid #ebebeb;
+      box-shadow: none;
+      color: #242424;
+      font-size: 12px;
+      height: 40px;
+      padding: 0 15px 0 50px;
+      width: 100%;
+      cursor: pointer;
+    }
+    input {
+      background: #fff none repeat scroll 0 0;
+      border: 1px solid #ebebeb;
+      height: 40px;
+      padding-right: 10px;
+      padding-left: 0px;
+    }
+  }
+}
+
+/*-------- Start My Account Page Wrapper --------*/
