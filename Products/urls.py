@@ -6,5 +6,5 @@ from django.conf import settings
 app_name = 'Products'
 
 urlpatterns = [
-                  path(),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
