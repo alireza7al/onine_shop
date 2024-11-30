@@ -1,0 +1,116 @@
+html {
+    box-sizing: border-box;
+}
+*, 
+*::after, 
+*::before{
+    box-sizing: inherit;
+    margin: 0;
+}
+body{
+    font-family: "Poppins";
+    background-color:  #080710;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+input, button{
+    font-family: inherit;
+    border: none;
+    outline: none;
+}
+
+.wrapper{
+    width: 400px;
+    position: relative;
+}
+
+.shape{
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    position: absolute;
+    z-index: -1;
+}
+.shape--one{
+    background: linear-gradient(#0D47A1, #42A5F5);
+    top: -80px;
+    left: -80px;
+}
+.shape--two{
+    background: linear-gradient(45deg, #E65100, #FFA726);
+    bottom: -90px;
+    right: -60px;
+}
+
+.form{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.13);
+    color: #fff;
+    padding: 50px 35px 35px 35px;
+    border: 2px solid rgba(255,255,255,0.13);
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+}
+
+.form__title{
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form__input-wrapper{
+    margin-bottom: 26px;
+}
+.form__label{
+    font-size: 16px;
+}
+.form__input{
+    font-size: 14px;
+    font-weight: 300;
+    display: block;
+    height: 50px;
+    background-color: rgba(255,255,255,0.07);
+    padding: 0 10px;
+    width: 100%;
+    margin-top: 8px;
+    color: #fff;
+    border-radius: 4px;
+}
+.form__input::placeholder{
+    color: #e5e5e5;
+}
+
+.form__submit-btn{
+    background-color: #fff;
+    color: #080710;
+    border-radius: 4px;
+    text-align: center;
+    padding: 15px 0;
+    display: block;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 46px;
+    font-weight: bold;
+}
+.alert {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff5252; /* رنگ پس زمینه */
+    color: #fff; /* رنگ متن */
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(210, 190, 190, 0.2);
+    z-index: 1000; /* برای اطمینان از نمایش بالاتر از سایر عناصر */
+    transition: opacity 0.5s ease-in-out; /* افکت محو شدن */
+}
+
+.alert.fade-out {
+    opacity: 0;
+}

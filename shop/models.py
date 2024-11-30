@@ -2,24 +2,13 @@ from django.utils import timezone
 from django.db import models
 from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from user.models import Customer
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
-
-
-class Customer(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
 
 
 def product_image_upload_to(instance, filename):
@@ -45,7 +34,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey('user.Customer', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     address = models.CharField(max_length=400, default='', blank=True)
     phone = models.CharField(max_length=20, blank=True)

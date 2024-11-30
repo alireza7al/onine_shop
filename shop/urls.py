@@ -7,5 +7,7 @@ from shop import views
 app_name = 'shop'
 
 urlpatterns = [
-                  path('', views.index_view, name='product_list'),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', views.index_view, name='home'),
+    path('about/', views.about_view, name='about'),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

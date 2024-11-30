@@ -1,6 +1,6 @@
+
 from django.shortcuts import render
 from .models import Product
-
 
 def index_view(request):
     all_products = Product.objects.all()
@@ -8,3 +8,11 @@ def index_view(request):
         'products': all_products
     }
     return render(request, 'index.html', context)
+
+def about_view(request):
+    return render(request, 'about.html')
+
+
+
+
+
