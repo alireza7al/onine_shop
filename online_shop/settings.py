@@ -40,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "Products.apps.ProductsConfig",
-    "home.apps.HomeConfig"
+    "shop.apps.ShopConfig",
+
+    'django.contrib.humanize',
+
+
 ]
 
 MIDDLEWARE = [
@@ -88,7 +91,7 @@ WSGI_APPLICATION = 'online_shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'online_shop',
+        'NAME': 'online_shop1',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
