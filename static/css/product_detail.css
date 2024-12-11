@@ -1,0 +1,119 @@
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.product-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    max-width: 1200px;
+    height: auto;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-image img:hover {
+    transform: scale(1.05);
+}
+
+.product-info {
+    text-align: right;
+    max-width: 600px;
+    padding-right: 40px;
+}
+
+.product-info h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.price-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.old-price {
+    font-size: 18px;
+    color: #e74c3c;
+    text-decoration: line-through;
+    margin-left: 10px;
+}
+
+.new-price {
+    font-size: 22px;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #555;
+    max-height: 125px; /* ارتفاع اولیه */
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    line-height: 1.6; /* فاصله بین خطوط */
+}
+
+.description.expanded {
+    max-height: 1100px; /* ارتفاع گسترش یافته */
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* فاصله بین دکمه‌ها */
+}
+
+.add-to-cart {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.add-to-cart:hover {
+    background-color: #27ae60;
+    transform: scale(1.05);
+}
+
+.add-to-cart.added {
+    background-color: #f39c12;
+    transform: scale(1.1);
+}
+
+.read-more {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.read-more:hover {
+    background-color: #2980b9;
+}

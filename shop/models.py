@@ -42,4 +42,4 @@ class Order(models.Model):
     status = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Order #{self.id} by {self.customer.first_name} {self.customer.last_name}"
+        return self.product

@@ -114,3 +114,25 @@ input, button{
 .alert.fade-out {
     opacity: 0;
 }
+.error {
+    color: #ec5d5d;
+    font-size: 111%;
+    margin-top: 5px;
+    }
+.help-text {
+    color: #666;
+    font-size: 0.8em;
+    margin-top: 5px;
+    }
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: none;
+    }
+    .fade-out {
+        opacity: 0;
+        transition: opacity 1s;
+    }

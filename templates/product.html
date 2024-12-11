@@ -1,0 +1,40 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+    جزئیات محصول
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+   
+{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+    <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <div class="price-container">
+            {% if product.sale_price %}
+                <span class="old-price">{{ product.price | intcomma }} تومان</span>
+                <span class="new-price">{{ product.sale_price | intcomma }} تومان</span>
+            {% else %}
+                <span class="new-price">{{ product.price | intcomma }} تومان</span>
+            {% endif %}
+        </div>
+        <p class="description">{{ product.description }}</p>
+        <div class="button-container">
+            <button class="add-to-cart" data-product-id="{{ product.id }}">افزودن به سبد خرید</button>
+            <button class="read-more">بیشتر بخوانید</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/product_detail.js' %}"></script>
+{% endblock js %}
