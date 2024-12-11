@@ -41,3 +41,5 @@ def category_view(request, cat):
     except Category.DoesNotExist:
         return redirect('shop:home')
         messages.success(request, 'دسته بندی وجود نداشت !')
+
+

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "shop",
 
     'django.contrib.humanize',
-    "user.apps.UserConfig"
+    "user.apps.UserConfig",
+    "cart.apps.CartConfig"
 
 ]
 
