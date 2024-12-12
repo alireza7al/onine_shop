@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'online_shop.middleware.Custom404Middleware'
+    'online_shop.middleware.Custom404Middleware',
 ]
 
 ROOT_URLCONF = 'online_shop.urls'
@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
+                'cart.context_processors.cart_quantity',
             ],
         },
     },
