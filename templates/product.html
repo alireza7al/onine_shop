@@ -28,7 +28,7 @@
         </div>
         <p class="description">{{ product.description }}</p>
         <div class="button-container">
-            <button class="add-to-cart" data-product-id="{{ product.id }}">افزودن به سبد خرید</button>
+            <button class="add-to-cart" type="button" value="{{ product.id }}" id="add_cart">افزودن به سبد خرید</button>
             <button class="read-more">بیشتر بخوانید</button>
         </div>
     </div>
@@ -37,4 +37,27 @@
 
 {% block js %}
 <script src="{% static 'js/product_detail.js' %}"></script>
+<script>
+//دکمه افزودن به سبد خرید با ajax
+$(document).on('click', '#add_cart', function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url:"{% url 'cart:add' %}",
+        data:{
+            product_id : $('#add_cart').val(),
+            csrfmiddlewaretoken : '{{ csrf_token }}',
+            action:'post'
+        },
+        
+        success: function (json){
+            console.log(json)
+        },
+        
+        error: function (xhr , errmsg , err){
+            
+        }
+    })
+})
+</script>
 {% endblock js %}
