@@ -3,11 +3,6 @@ from .models import Product, Category
 from django.contrib import messages
 
 
-# views.py
-# def custom_404_view(request, exception):
-#     return render(request, 'parts/error_404.html', status=404)
-
-
 def index_view(request):
     all_products = Product.objects.all()
     context = {
@@ -43,3 +38,9 @@ def category_view(request, cat):
         messages.success(request, 'دسته بندی وجود نداشت !')
 
 
+def categories_page(request):
+    all_category = Category.objects.all()
+    context = {
+        'all_category': all_category
+    }
+    return render(request, 'categories_page.html', context)

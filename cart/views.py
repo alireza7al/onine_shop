@@ -7,7 +7,15 @@ from django.http import JsonResponse
 
 # Create your views here.
 def cart_view(request):
-    return render(request, 'cart.html', {})
+    cart = Cart(request)
+    cart_items = cart.get_product()
+
+    total_price = cart.get_total_price()
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price
+    }
+    return render(request, 'cart.html', context)
 
 
 def cart_add(request):
@@ -25,8 +33,16 @@ def cart_add(request):
 
 
 def cart_delete(request):
-    pass
+    cart = Cart(request)
+
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        cart.remove(product_id)
+
+        cart_quantity = cart.__len__()
+        total_price = cart.get_total_price()
+        response = JsonResponse({'qty': cart_quantity , 'total_price': total_price})
+        return response
 
 
-def cart_update(request):
-    pass
+

@@ -1,0 +1,43 @@
+/* Categories Page Styles */
+.categories-main {
+    padding: 20px;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.category-item {
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.category-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #444;
+}

@@ -4,8 +4,11 @@ from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
 from user.models import Customer
 
+def category_image_upload_to(instance, filename):
+    return f'categories/{instance.name}/{filename}'
 class Category(models.Model):
     name = models.CharField(max_length=20)
+    image = models.ImageField(upload_to=category_image_upload_to, blank=True, null=True)
 
     def __str__(self):
         return self.name
