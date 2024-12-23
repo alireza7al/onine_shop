@@ -18,10 +18,15 @@
                 <!-- محصولات اینجا نمایش داده می‌شوند -->
                 {% for item in cart_items %}
                     <li data-product-id="{{ item.product.id }}">
+
                         <div class="product-info">
                             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        </div>
+
                             <div class="product-details">
-                                <span class="name">{{ item.product.name }}</span>
+                                <div class="container_name">
+                                    <span class="name">{{ item.product.name }}</span>
+                                </div>
 
                                 {% if item.product.sale_price %}
                                 <div class="container2">
@@ -39,7 +44,7 @@
                                     <span id="price">مبلغ: {{ item.sum_quantity_price|intcomma}}</span>
                                 </div>
                             </div>
-                        </div>
+
                         <button data-product-id="{{ item.product.id }}" onclick="removeFromCart({{ item.product.id }})">حذف</button>
                     </li>
                 {% endfor %}

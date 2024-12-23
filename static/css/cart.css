@@ -22,9 +22,15 @@ body {
 }
 .container2{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding-top: 4%;
+}
+
+.container_name{
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 @keyframes fadeIn {
     from {
@@ -84,6 +90,7 @@ li .product-info img {
 
 li .product-details {
     text-align: left;
+    width: 280px;
 }
 
 li .product-details span {
