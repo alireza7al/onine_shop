@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from .forms import SingUpForm
+from .forms import SingUpForm, ProfileUpdateForm, UpdatePasswordForm
+from django.contrib.auth.decorators import login_required
 
 
 def login_user(request):
@@ -27,13 +25,6 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'با موفقیت خارج شدید!')
     return redirect('shop:home')
-
-
-
-
-
-
-
 
 
 def translate_error(field, error):
@@ -68,6 +59,7 @@ def translate_error(field, error):
     }
     return translations.get(field, {}).get(error, None)
 
+
 def signup_user(request):
     if request.method == 'POST':
         form = SingUpForm(request.POST)
@@ -90,3 +82,42 @@ def signup_user(request):
     else:
         form = SingUpForm()
         return render(request, 'singup2.html', {'form': form})
+
+
+@login_required
+def profile_update(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'با موفقیت پروفایل شما ویرایش شد')
+            return redirect('shop:home')  # به صفحه پروفایل هدایت می‌شود
+        else:
+            messages.success(request, 'خطایی رخ داده است ')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+
+    return render(request, 'profile_update.html', {'form': form})
+
+
+def UpdatePasswordView(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+
+        if request.method == 'POST':
+            form = UpdatePasswordForm(current_user, request.POST)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'رمز با موفقیت ویرایش شد! ')
+                return redirect('shop:home')  # Redirect to user profile or any other page
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+                return redirect('user:update_password')
+        else:
+            form = UpdatePasswordForm(request.user)
+            return render(request, 'update_password.html', {'form': form})
+    else:
+        messages.success(request, 'اول لاگین کنید!')
+        return redirect('shop:home')

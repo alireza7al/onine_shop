@@ -1,22 +1,26 @@
 /* Wrapper Styling */
-
+.parent{
+    min-height: 100vh;
+    background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+}
 .wrapper {
     position: relative;
     width: 90%;
     max-width: 400px;
-    background: white;
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     padding: 40px 30px;
     margin: 0 auto;
+
 }
 
 /* Shape Styling */
 .shape {
     position: absolute;
     background: #6a11cb;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
     border-radius: 50%;
 }
 
@@ -38,6 +42,7 @@
 .form {
     position: relative;
     z-index: 1;
+
 }
 
 .form__title {
@@ -79,7 +84,7 @@
 .form__submit-btn {
     width: 100%;
     padding: 10px;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
     color: white;
     border: none;
     border-radius: 5px;
@@ -89,7 +94,7 @@
 }
 
 .form__submit-btn:hover {
-    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
 }
 
 .error {
@@ -105,13 +110,77 @@
 }
 
 /* Alert Styling */
+
 .alert {
-    background-color: #ff6b6b;
+    background-image: linear-gradient(to top, #c71d6f 0%, #d09693 100%);
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
     margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.alert:hover::before {
+    transform: translateX(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.form__password-update{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.form__password-update-btn {
+    background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.form__password-update-btn:hover {
+    background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form__password-update-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
