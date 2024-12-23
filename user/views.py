@@ -89,4 +89,4 @@ def signup_user(request):
             return redirect('user:signup')
     else:
         form = SingUpForm()
-        return render(request, 'singup.html', {'form': form})
+        return render(request, 'singup2.html', {'form': form})

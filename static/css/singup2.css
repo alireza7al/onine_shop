@@ -1,0 +1,117 @@
+/* Wrapper Styling */
+
+.wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 40px 30px;
+    margin: 0 auto;
+}
+
+/* Shape Styling */
+.shape {
+    position: absolute;
+    background: #6a11cb;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    border-radius: 50%;
+}
+
+.shape--one {
+    width: 150px;
+    height: 150px;
+    top: -50px;
+    right: -50px;
+}
+
+.shape--two {
+    width: 100px;
+    height: 100px;
+    bottom: -30px;
+    left: -30px;
+}
+
+/* Form Styling */
+.form {
+    position: relative;
+    z-index: 1;
+}
+
+.form__title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form__input-wrapper {
+    margin-bottom: 20px;
+}
+
+.form__label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.form__input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form__input:focus {
+    border-color: #6a11cb;
+    outline: none;
+}
+
+.form__checkbox {
+    margin-right: 10px;
+}
+
+.form__submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form__submit-btn:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+}
+
+.error {
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.help-text {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* Alert Styling */
+.alert {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
