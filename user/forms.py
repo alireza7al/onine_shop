@@ -1,29 +1,30 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django import forms
+from .models import Profile
 from django.core.exceptions import ValidationError
 
 
 class SingUpForm(UserCreationForm):
-    first_name = forms.CharField(
-        label='',
-        max_length=30,
-        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خود را وارد کنید'}),
-
-    )
-
-    last_name = forms.CharField(
-        label='',
-        max_length=30,
-        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خانوادگی خود را وارد کنید'}),
-
-    )
-
-    email = forms.EmailField(
-        label='',
-        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'ایمیل خود را وارد کنید '}),
-        help_text='ایمیل معتبر وارد کنید'
-    )
+    # first_name = forms.CharField(
+    #     label='',
+    #     max_length=30,
+    #     widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خود را وارد کنید'}),
+    #
+    # )
+    #
+    # last_name = forms.CharField(
+    #     label='',
+    #     max_length=30,
+    #     widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خانوادگی خود را وارد کنید'}),
+    #
+    # )
+    #
+    # email = forms.EmailField(
+    #     label='',
+    #     widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'ایمیل خود را وارد کنید '}),
+    #     help_text='ایمیل معتبر وارد کنید'
+    # )
 
     username = forms.CharField(
         label='',
@@ -60,32 +61,70 @@ class SingUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'username', 'password1', 'password2')
+        fields = ('username', 'password1', 'password2')
 
 
-class ProfileUpdateForm(UserChangeForm):
+class ProfileUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
         label='نام',
-        max_length=30,
+        max_length=25,
         widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خود را وارد کنید'}),
+        help_text=''
     )
 
     last_name = forms.CharField(
         label='نام خانوادگی',
-        max_length=30,
+        max_length=25,
         widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خانوادگی خود را وارد کنید'}),
+        help_text=''
     )
 
     email = forms.EmailField(
         label='ایمیل',
-        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'ایمیل خود را وارد کنید'}),
-        help_text='ایمیل معتبر وارد کنید'
+        max_length=100,
+        widget=forms.EmailInput(attrs={'class': 'form__input', 'placeholder': 'ایمیل خود را وارد کنید'}),
+        help_text=''
     )
-    password = None
+
+    city = forms.CharField(
+        label='شهر',
+        max_length=25,
+        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'شهر خود را وارد کنید'}),
+        help_text=''
+    )
+
+    address1 = forms.CharField(
+        label='آدرس اول',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'آدرس خود را وارد کنید'}),
+        help_text=''
+    )
+
+    address2 = forms.CharField(
+        label='آدرس دوم',
+        max_length=100,
+        required=False,  # این فیلد اختیاری است
+        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'آدرس دوم (اختیاری)'}),
+        help_text=''
+    )
+
+    postal_code = forms.CharField(
+        label='کد پستی',
+        max_length=10,
+        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'کد پستی خود را وارد کنید'}),
+        help_text=''
+    )
+
+    phone_number = forms.CharField(
+        label='شماره تلفن',
+        max_length=15,
+        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'شماره تلفن خود را وارد کنید'}),
+        help_text=''
+    )
 
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
+        model = Profile
+        fields = ['first_name', 'last_name', 'email', 'city', 'address1', 'address2', 'postal_code', 'phone_number']
 
 
 class UpdatePasswordForm(SetPasswordForm):
@@ -103,4 +142,3 @@ class UpdatePasswordForm(SetPasswordForm):
             'class': 'form__input',
             'placeholder': 'رمز عبور جدید را دوباره وارد کنید',
         })
-

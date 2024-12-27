@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib import messages
 from .forms import SingUpForm, ProfileUpdateForm, UpdatePasswordForm
 from django.contrib.auth.decorators import login_required
+from .models import Profile
 
 
 def login_user(request):
@@ -70,7 +71,7 @@ def signup_user(request):
             user = authenticate(request, username=username, password=password1)
             login(request, user)
             messages.success(request, ('اکانت شما با موفقیت ساخته شد'))
-            return redirect('shop:home')
+            return redirect('user:profile_update')
         else:
             # نمایش خطاهای خاص به کاربر
             for field, errors in form.errors.items():
@@ -83,20 +84,16 @@ def signup_user(request):
         form = SingUpForm()
         return render(request, 'singup2.html', {'form': form})
 
-
 @login_required
 def profile_update(request):
+    profile = Profile.objects.get(user=request.user)
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, instance=request.user)
+        form = ProfileUpdateForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'با موفقیت پروفایل شما ویرایش شد')
-            return redirect('shop:home')  # به صفحه پروفایل هدایت می‌شود
-        else:
-            messages.success(request, 'خطایی رخ داده است ')
+            return redirect('shop:home')
     else:
-        form = ProfileUpdateForm(instance=request.user)
-
+        form = ProfileUpdateForm(instance=profile)
     return render(request, 'profile_update.html', {'form': form})
 
 

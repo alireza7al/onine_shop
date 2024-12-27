@@ -68,14 +68,6 @@ document.querySelector('form').addEventListener('submit', function(event) {
         }
     });
 
-    // Check for email format
-    const emailInput = form.querySelector('input[type="email"]');
-    if (emailInput && !emailInput.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-        const errorDiv = emailInput.parentElement.querySelector('.error');
-        errorDiv.innerText = 'ایمیل وارد شده معتبر نیست.';
-        hasErrors = true;
-    }
-
     // Check for password match and length
     const password1 = form.querySelector('input[name="password1"]');
     const password2 = form.querySelector('input[name="password2"]');
