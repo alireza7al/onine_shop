@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Category
 from django.contrib import messages
+from django.db.models import Q
 
 
 def index_view(request):
@@ -9,6 +10,20 @@ def index_view(request):
         'products': all_products
     }
     return render(request, 'index.html', context)
+
+
+def search_view(request):
+    if request.method == 'POST':
+        search_value = request.POST.get('search')
+
+        products = Product.objects.filter(Q(name__icontains=search_value) | Q(description__icontains=search_value))
+        if products:
+            return render(request, 'search.html', {'products': products})
+        else:
+            messages.success(request, ('نتیجه ای برای جستجوی شما یافت نشد !'))
+            return redirect('shop:search')
+    else:
+        return render(request, 'search.html', {})
 
 
 def about_view(request):

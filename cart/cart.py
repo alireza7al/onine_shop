@@ -1,15 +1,36 @@
 from shop.models import Product
+from user.models import Profile
 
 
 class Cart:
     def __init__(self, request):
         self.session = request.session
+        self.request = request
 
         cart = self.session.get('session_key')
         if 'session_key' not in request.session:
             cart = self.session['session_key'] = {}
 
         self.cart = cart
+
+    def db_add(self, product, quantity=1):
+        product_id = str(product)
+        if product_id in self.cart:
+            pass  # اگر محصول از قبل در سبد خرید وجود دارد، کاری نکنید
+        else:
+            # اگر quantity یک دیکشنری است، آن را مستقیماً ذخیره کنید
+            if isinstance(quantity, dict):
+                self.cart[product_id] = quantity
+            else:
+                # در غیر این صورت، آن را به‌عنوان یک عدد ذخیره کنید
+                self.cart[product_id] = int(quantity)
+
+        self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            db_cart = str(self.cart).replace('\'', '\"')
+            current_user.update(old_cart=db_cart)
 
     def add(self, product, quantity=1):
         product_id = str(product.id)
@@ -21,6 +42,11 @@ class Cart:
             self.cart[product_id] = {'price': str(product.price), 'quantity': quantity}
 
         self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            db_cart = str(self.cart).replace('\'', '\"')
+            current_user.update(old_cart=db_cart)
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
@@ -44,6 +70,11 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            db_cart = str(self.cart).replace('\'', '\"')
+            current_user.update(old_cart=db_cart)
 
     def get_total_price(self):
         total_price = 0

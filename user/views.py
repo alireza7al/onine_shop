@@ -1,10 +1,14 @@
+import json
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
+
+from cart.cart import Cart
 from .forms import SingUpForm, ProfileUpdateForm, UpdatePasswordForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-
+import json
 
 def login_user(request):
     if request.method == 'POST':
@@ -13,10 +17,26 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+
+            # برای ذخیره فیلد oldcart در سبد خرید
+            try:
+                current_user = Profile.objects.get(user__id=request.user.id)
+                save_cart = current_user.old_cart
+
+                if save_cart:
+                    converted_cart = json.loads(save_cart)
+
+                    cart = Cart(request)
+
+                    for key, value in converted_cart.items():
+                        cart.db_add(product=key, quantity=value)
+            except (Profile.DoesNotExist, json.JSONDecodeError) as e:
+                messages.error(request, 'مشکلی در بازیابی سبد خرید وجود داشت.')
+
             messages.success(request, 'با موفقیت وارد شدید !')
             return redirect('shop:home')
         else:
-            messages.success(request, 'مشکلی در لاگین وجود داشت !')
+            messages.error(request, 'مشکلی در لاگین وجود داشت !')
             return redirect('user:login')
     else:
         return render(request, 'login.html')
