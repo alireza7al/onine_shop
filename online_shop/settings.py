@@ -44,9 +44,15 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
     "user.apps.UserConfig",
-    "cart.apps.CartConfig"
+    "cart.apps.CartConfig",
+    "payment.apps.PaymentConfig",
 
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+# تنظیمات Crispy Forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

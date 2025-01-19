@@ -51,7 +51,7 @@
             </ul>
             <div class="cart-summary">
                 <p class="total_price">جمع کل: <span id="total_price" class>{{ total_price|intcomma }}</span> تومان</p>
-                <button id="checkout-btn">پرداخت</button>
+                <a href="{% url 'payment:create_shipping_address' %}"><button id="checkout-btn">پرداخت</button></a>
             </div>
         </div>
     </div>

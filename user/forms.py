@@ -85,7 +85,12 @@ class ProfileUpdateForm(forms.ModelForm):
         widget=forms.EmailInput(attrs={'class': 'form__input', 'placeholder': 'ایمیل خود را وارد کنید'}),
         help_text=''
     )
-
+    province = forms.CharField(
+        label='استان',
+        max_length=25,
+        widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'استان خود را وارد کنید'}),
+        help_text=''
+    )
     city = forms.CharField(
         label='شهر',
         max_length=25,
@@ -124,7 +129,8 @@ class ProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'email', 'city', 'address1', 'address2', 'postal_code', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'province', 'city', 'address1', 'address2', 'postal_code',
+                  'phone_number']
 
 
 class UpdatePasswordForm(SetPasswordForm):
