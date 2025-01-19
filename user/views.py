@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 import json
 
+
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -29,7 +30,9 @@ def login_user(request):
                     cart = Cart(request)
 
                     for key, value in converted_cart.items():
-                        cart.db_add(product=key, quantity=value)
+                        # print('key:', key)
+                        # print('value:', value)
+                        cart.db_add(product=key, quantity_and_price=value)
             except (Profile.DoesNotExist, json.JSONDecodeError) as e:
                 messages.error(request, 'مشکلی در بازیابی سبد خرید وجود داشت.')
 
@@ -103,6 +106,7 @@ def signup_user(request):
     else:
         form = SingUpForm()
         return render(request, 'singup2.html', {'form': form})
+
 
 @login_required
 def profile_update(request):

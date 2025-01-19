@@ -13,17 +13,13 @@ class Cart:
 
         self.cart = cart
 
-    def db_add(self, product, quantity=1):
+    def db_add(self, product, quantity_and_price):
         product_id = str(product)
         if product_id in self.cart:
             pass  # اگر محصول از قبل در سبد خرید وجود دارد، کاری نکنید
         else:
-            # اگر quantity یک دیکشنری است، آن را مستقیماً ذخیره کنید
-            if isinstance(quantity, dict):
-                self.cart[product_id] = quantity
-            else:
-                # در غیر این صورت، آن را به‌عنوان یک عدد ذخیره کنید
-                self.cart[product_id] = int(quantity)
+            if isinstance(quantity_and_price, dict):
+                self.cart[product_id] = quantity_and_price
 
         self.session.modified = True
 
