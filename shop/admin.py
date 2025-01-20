@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Order
+from .models import Category, Product
 
 
 # اکشن سفارشی برای حذف چندین رکورد
@@ -24,10 +24,10 @@ class ProductAdmin(admin.ModelAdmin):
     actions = [delete_selected_items]  # افزودن اکشن سفارشی
 
 
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'customer', 'product', 'quantity', 'date', 'status')
-    search_fields = ('customer__first_name', 'customer__last_name', 'product__name')
-    list_filter = ('status', 'date')
-    readonly_fields = ('date',)
-    actions = [delete_selected_items]  # افزودن اکشن سفارشی
+# @admin.register(Order)
+# class OrderAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'customer', 'product', 'quantity', 'date', 'status')
+#     search_fields = ('customer__first_name', 'customer__last_name', 'product__name')
+#     list_filter = ('status', 'date')
+#     readonly_fields = ('date',)
+#     actions = [delete_selected_items]  # افزودن اکشن سفارشی

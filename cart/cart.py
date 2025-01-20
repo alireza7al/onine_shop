@@ -78,3 +78,32 @@ class Cart:
             total_price += (int(item['price']) * int(item['quantity']))
 
         return total_price
+
+    def clear(self):
+        # پاک کردن تمامی آیتم‌های سبد خرید
+        self.cart.clear()
+
+        # ذخیره تغییرات در session
+        self.session.modified = True
+
+        # اگر کاربر لاگین کرده باشد، سبد خرید قدیمی را در پروفایل پاک کنید
+        if self.request.user.is_authenticated:
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            current_user.update(old_cart={})  # پاک کردن سبد خرید قدیمی
+
+    def __iter__(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        cart_items = []
+
+        for product in products:
+            product_id = str(product.id)
+            quantity = self.cart[product_id]['quantity']
+            price = self.cart[product_id]['price']
+            cart_items.append({
+                'product': product,
+                'quantity': quantity,
+                'price': price
+            })
+
+        return iter(cart_items)
