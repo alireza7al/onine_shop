@@ -3,22 +3,22 @@ from django.utils.html import format_html
 from .models import ShippingAddress, Order, OrderItem
 
 
-# تابع کمکی برای فرمت‌کردن قیمت‌ها
-def format_price(price):
-    return "{:,.0f}".format(price)
-
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
-    readonly_fields = ('product', 'quantity', 'price', 'formatted_total_price')
+    readonly_fields = ('product', 'quantity', 'formatted_price', 'formatted_total_price')
 
+    @admin.display(description='قیمت واحد')
+    def formatted_price(self, obj):
+        if obj.price is not None:
+            return f"{obj.price:,}"
+        return "0"
+
+    @admin.display(description='قیمت کل')
     def formatted_total_price(self, obj):
-        if obj.quantity is not None and obj.price is not None:
-            return format_price(obj.quantity * obj.price)
-        return "N/A"
-
-    formatted_total_price.short_description = 'قیمت کل'
+        if obj.total_price is not None:
+            return f"{obj.total_price:,}"
+        return "0"
 
 
 @admin.register(ShippingAddress)
@@ -26,7 +26,7 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = ('Shipping_user', 'Shipping_full_name', 'Shipping_city', 'Shipping_address1', 'Shipping_postal_code')
     list_filter = ('Shipping_city', 'Shipping_province')
     search_fields = ('Shipping_user__username', 'Shipping_full_name', 'Shipping_postal_code')
-    readonly_fields = ('Shipping_user',)  # فیلد کاربر فقط قابل مشاهده باشد
+    readonly_fields = ('Shipping_user',)
 
 
 @admin.register(Order)
@@ -37,10 +37,11 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
     inlines = [OrderItemInline]
 
+    @admin.display(description='قیمت کل')
     def formatted_total_price(self, obj):
-        return format_price(obj.total_price)
-
-    formatted_total_price.short_description = 'قیمت کل'
+        if obj.total_price is not None:
+            return f"{obj.total_price:,}"
+        return "0"  # یا هر مقدار پیش‌فرض دیگر
 
     # اکشن‌های سفارشی برای تغییر وضعیت پرداخت
     actions = ['mark_as_paid', 'mark_as_unpaid']
@@ -62,14 +63,14 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_filter = ('order__is_paid',)
     search_fields = ('order__id', 'product__name')
 
+    @admin.display(description='قیمت واحد')
     def formatted_price(self, obj):
-        return format_price(obj.price)
+        if obj.price is not None:
+            return f"{obj.price:,}"
+        return "0"  # یا هر مقدار پیش‌فرض دیگر
 
-    formatted_price.short_description = 'قیمت واحد'
-
+    @admin.display(description='قیمت کل')
     def formatted_total_price(self, obj):
-        if obj.quantity is not None and obj.price is not None:
-            return format_price(obj.quantity * obj.price)
-        return "N/A"
-
-    formatted_total_price.short_description = 'قیمت کل'
+        if obj.total_price is not None:
+            return f"{obj.total_price:,}"
+        return "0"  # یا هر مقدار پیش‌فرض دیگر

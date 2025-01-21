@@ -14,6 +14,7 @@
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'shop:home' %}">خانه</a></li>
                 <li class="nav-item"></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'shop:about' %}">درباره ما</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'payment:order_history' %}">تاریخچه سفارشات</a></li>
 
                 {% if user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'user:logout' %}">خارج شدن</a></li>

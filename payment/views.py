@@ -44,7 +44,7 @@ def create_shipping_address(request):
                     order=order,
                     product=item['product'],
                     quantity=item['quantity'],
-                    price=item['price']
+                    price=int(item['price'])
                 )
 
             # پاک کردن سبد خرید
@@ -143,3 +143,16 @@ def success(request):
 
 def error(request):
     return render(request, 'error.html')
+
+
+@login_required
+def order_history(request):
+    user = request.user
+    orders = Order.objects.filter(user=user).order_by('-created_at')
+    return render(request, 'order_history.html', {'orders': orders})
+
+
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_detail.html', {'order': order})

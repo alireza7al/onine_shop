@@ -1,5 +1,3 @@
-
-
 // تابع برای پرداخت
 document.getElementById("checkout-btn").addEventListener("click", () => {
     // ارسال درخواست به سرور برای خالی کردن سبد خرید
@@ -10,7 +8,6 @@ document.getElementById("checkout-btn").addEventListener("click", () => {
             location.reload();
         })
         .catch(error => {
-            console.error("خطا در پرداخت:", error);
-            alert("مشکلی در پرداخت رخ داده است!");
+            console.error("خطا در پرداخت:", error); // فقط خطا را در کنسول نمایش دهید
         });
 });

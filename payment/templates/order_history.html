@@ -1,0 +1,47 @@
+{% extends 'parts/base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">تاریخچه سفارشات</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">شماره سفارش</th>
+                    <th scope="col">تاریخ سفارش</th>
+                    <th scope="col">مبلغ کل</th>
+                    <th scope="col">وضعیت پرداخت</th>
+                    <th scope="col">جزئیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.created_at|date:"Y/m/d H:i" }}</td>
+                    <td>{{ order.total_price|intcomma }} تومان</td>
+                    <td>
+                        {% if order.is_paid %}
+                        <span class="badge bg-success">پرداخت شده</span>
+                        {% else %}
+                        <span class="badge bg-danger">پرداخت نشده</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'payment:order_detail' order.id %}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> مشاهده جزئیات
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">هیچ سفارشی یافت نشد.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+
+{% endblock %}
