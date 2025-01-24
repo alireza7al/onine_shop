@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Category
+from .models import Product, Category, Comment
 from django.contrib import messages
 from django.db.models import Q, F
+from django.utils import timezone
+from .forms import CommentForm
+from django.contrib.auth.decorators import login_required
 
 
 def index_view(request):
@@ -68,17 +71,43 @@ def about_view(request):
 def detail_view(request, pk):
     product = get_object_or_404(Product, id=pk)
 
-    # افزایش تعداد بازدیدها
-    product.views_count = F('views_count') + 1
-    product.save(update_fields=['views_count'])
-    product.refresh_from_db()
+    Product.objects.filter(id=pk).update(views_count=F('views_count') + 1)
+
+    comments = product.comments.filter(approved_comment=True)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.user = request.user
+            comment.save()
+            return redirect('shop:product', pk=product.id)
+    else:
+        form = CommentForm()
 
     context = {
-        'product': product
+        'product': product,
+        'comments': comments,
+        'form': form,
     }
+
     return render(request, 'product.html', context)
 
-
+@login_required
+def add_comment_to_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.user = request.user
+            comment.save()
+            return redirect('shop:product', pk=product.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'add_comment_to_product.html', {'form': form})
 def category_view(request, cat):
     cat = cat.replace('_', ' ')
     try:
@@ -100,3 +129,6 @@ def categories_page(request):
         'all_category': all_category
     }
     return render(request, 'categories_page.html', context)
+
+
+

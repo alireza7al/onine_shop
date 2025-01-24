@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
-from datetime import datetime
+from django.contrib.auth.models import User
+from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 from user.models import Customer
 
@@ -35,14 +36,16 @@ class Product(models.Model):
         return self.name
 
 
-# class Order(models.Model):
-#     product = models.ForeignKey('Product', on_delete=models.CASCADE)
-#     customer = models.ForeignKey('user.Customer', on_delete=models.CASCADE)
-#     quantity = models.IntegerField(default=1)
-#     address = models.CharField(max_length=400, default='', blank=True)
-#     phone = models.CharField(max_length=20, blank=True)
-#     date = models.DateField(default=datetime.today)
-#     status = models.BooleanField(default=False)
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    approved_comment = models.BooleanField(default=False)
 
-    # def __str__(self):
-    #     return self.product
+    def approve(self):
+        self.approved_comment = True
+        self.save()
+
+    def __str__(self):
+        return self.text
