@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from user.models import Profile
@@ -122,10 +123,14 @@ def verify_payment(request):
                 order.is_paid = True
                 order.ref_id = result['data']['ref_id']
                 order.save()
+
+                for order_item in order.items.all():  # استفاده از related_name='items'
+                    product = order_item.product
+                    product.sales_count = F('sales_count') + order_item.quantity
+                    product.save(update_fields=['sales_count'])
                 return redirect('payment:success')
             else:
                 # پرداخت ناموفق
-                print("Payment failed. Code:", result['data']['code'], "Message:", result['data']['message'])
                 return redirect('payment:error')
         else:
             # خطا در ارتباط با سرور زرین‌پال

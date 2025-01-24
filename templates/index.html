@@ -1,67 +1,168 @@
 {% extends 'parts/base.html' %}
 {% load static %}
 {% load humanize %}
+
+{% block head %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- اضافه کردن فونت Vazir -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Vazir, sans-serif;
+        }
+        .custom-form {
+            max-width: 500px; /* محدود کردن عرض فرم */
+            margin: 0 auto; /*居中 کردن فرم */
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-check:checked + .btn-outline-primary {
+            background-color: #0d6efd; /* تغییر رنگ دکمه هنگام انتخاب */
+            color: white;
+        }
+        .filter-options .btn {
+            margin: 5px; /* فاصله بین دکمه‌ها */
+            flex: 1 1 auto; /* تنظیم اندازه دکمه‌ها */
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-{% include 'parts/header.html' %}
-        <!-- Section-->
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {% for item in products %}
-                        {% if item.is_sale %}
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">فروش ویژه</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{ item.image.url }}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ item.name}}</h5><br>
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        {% with ''|center:item.star as range %}
-                                        	{% for _ in range %}
-                                        		<div class="bi-star-fill"></div>
-                                        	{% endfor %}
-                                        {% endwith %}
-                                    </div>
-                                    <!-- Product price-->
-                                    <span class="old-price">{{item.price |intcomma}} تومان </span><br>
-                                    <span class="new-price">{{item.sale_price |intcomma}} تومان </span>
-                                </div>
-                            </div>
-                            {% else %}
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{ item.image.url }}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ item.name}}</h5><br>
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        {% with ''|center:item.star as range %}
-                                        	{% for _ in range %}
-                                        		<div class="bi-star-fill"></div>
-                                        	{% endfor %}
-                                        {% endwith %}
-                                    </div>
-                                    <!-- Product price-->
-                                    <span class="new-price">{{item.price |intcomma}} تومان </span>
-                                </div>
-                            </div>
-                            {% endif %}
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'shop:product' item.id %}">View options</a></div>
-                            </div>
-                        </div>
-                    </div>
+    {% include 'parts/header.html' %}
+    <div class="container mt-5">
+        <button id="toggle-filter-btn" class="btn btn-dark mb-3">نمایش/مخفی کردن فیلترها</button>
+        
+        <form id="filter-form" method="GET" action="{% url 'shop:home' %}" class="custom-form" style="display: none;">
+            <h3 class="mb-4 text-center">فیلتر محصولات</h3>
+
+            <!-- فیلتر دسته‌بندی -->
+            <div class="mb-3">
+                <label for="category" class="form-label">دسته‌بندی:</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="">همه دسته‌بندی‌ها</option>
+                    {% for category in categories %}
+                        <option value="{{ category.name }}" {% if category.name == request.GET.category %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
                     {% endfor %}
+                </select>
+            </div>
+
+            <!-- فیلتر قیمت -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="min_price" class="form-label">حداقل قیمت:</label>
+                    <input type="number" name="min_price" id="min_price" class="form-control" value="{{ request.GET.min_price }}">
+                </div>
+                <div class="col-md-6">
+                    <label for="max_price" class="form-label">حداکثر قیمت:</label>
+                    <input type="number" name="max_price" id="max_price" class="form-control" value="{{ request.GET.max_price }}">
                 </div>
             </div>
-        </section>
 
+            <!-- فیلتر‌های چک‌باکس (دکمه‌های زیبا) -->
+            <div class="mb-3">
+                <label class="form-label">گزینه‌های فیلتر:</label>
+                <div class="d-flex flex-wrap filter-options">
+                    <!-- محبوب‌ترین‌ها -->
+                    <input type="checkbox" class="btn-check" name="popular" id="popular" autocomplete="off" {% if request.GET.popular %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="popular">محبوب‌ترین‌ها</label>
+
+                    <!-- پرفروش‌ترین‌ها -->
+                    <input type="checkbox" class="btn-check" name="best_selling" id="best_selling" autocomplete="off" {% if request.GET.best_selling %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="best_selling">پرفروش‌ترین‌ها</label>
+
+                    <!-- پر بازدیدترین‌ها -->
+                    <input type="checkbox" class="btn-check" name="most_viewed" id="most_viewed" autocomplete="off" {% if request.GET.most_viewed %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="most_viewed">پر بازدیدترین‌ها</label>
+
+                    <!-- فروش ویژه -->
+                    <input type="checkbox" class="btn-check" name="on_sale" id="on_sale" autocomplete="off" {% if request.GET.on_sale %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="on_sale">فروش ویژه</label>
+                </div>
+            </div>
+
+            <!-- دکمه فیلتر -->
+            <button type="submit" class="btn btn-success w-100 submit-btn">اعمال فیلتر</button>
+        </form>
+    </div>
+  
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for item in products %}
+                    {% if item.is_sale %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">فروش ویژه</div>
+                        <!-- Product image-->
+                        <img class="card-img-top" src="{{ item.image.url }}" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ item.name}}</h5><br>
+                                <div class="d-flex justify-content-center small text-warning mb-2">
+                                    {% with ''|center:item.star as range %}
+                                        {% for _ in range %}
+                                           <div class="bi-star-fill"></div>
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                                <!-- Product price-->
+                                <span class="old-price">{{item.price |intcomma}} تومان </span><br>
+                                <span class="new-price">{{item.sale_price |intcomma}} تومان </span>
+                            </div>
+                        </div>
+                        {% else %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="{{ item.image.url }}" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ item.name}}</h5><br>
+                                <div class="d-flex justify-content-center small text-warning mb-2">
+                                    {% with ''|center:item.star as range %}
+                                        {% for _ in range %}
+                                           <div class="bi-star-fill"></div>
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                                <!-- Product price-->
+                                <span class="new-price">{{item.price |intcomma}} تومان </span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'shop:product' item.id %}">View options</a></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 {% endblock content %}
+{% block js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('toggle-filter-btn');
+        const filterForm = document.getElementById('filter-form');
+
+        toggleButton.addEventListener('click', function() {
+            if (filterForm.style.display === 'none') {
+                filterForm.style.display = 'block';
+            } else {
+                filterForm.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

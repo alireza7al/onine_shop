@@ -1,0 +1,184 @@
+
+    /* استایل کلی صفحه */
+    body {
+        font-family: Vazir, sans-serif;
+        background-color: #ffffff;
+        color: #333;
+        min-height: 100vh;
+    }
+
+    /* استایل کانتینر اصلی */
+    .custom-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* استایل کارت محصولات */
+    .custom-card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff;
+        position: relative;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-card-img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .custom-card-body {
+        padding: 20px;
+    }
+
+    .custom-card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    /* استایل بنر فروش ویژه (روبان) */
+    .custom-sale-ribbon {
+        position: absolute;
+        top: 15px;
+        right: -15px;
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transform: rotate(45deg);
+        z-index: 1;
+        animation: ribbon-animation 1.5s infinite alternate;
+    }
+
+    /* ایجاد شکل مثلثی در انتهای بنر */
+    .custom-sale-ribbon::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        right: 0;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #c0392b transparent transparent transparent;
+    }
+
+    /* انیمیشن بنر */
+    @keyframes ribbon-animation {
+        0% {
+            transform: rotate(45deg) translateY(0);
+        }
+        100% {
+            transform: rotate(45deg) translateY(-5px);
+        }
+    }
+
+    /* استایل ستاره‌های امتیاز */
+    .custom-star-rating {
+        color: #f1c40f;
+        font-size: 1rem;
+    }
+
+    .custom-star {
+        margin: 0 2px;
+    }
+
+    /* استایل قیمت */
+    .custom-price {
+        margin-top: 10px;
+    }
+
+    .custom-old-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+    }
+
+    .custom-new-price {
+        color: #e74c3c;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    /* استایل فرم فیلتر */
+    .custom-filter-form {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-filter-form h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .custom-form-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .custom-form-select, .custom-form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .custom-form-select:focus, .custom-form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    }
+
+    /* استایل دکمه‌های فیلتر */
+    .custom-filter-options .btn {
+        margin: 5px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .custom-btn-outline {
+        border-color: #3498db;
+        color: #3498db;
+    }
+
+    .custom-btn-outline:hover {
+        background-color: #3498db;
+        color: #fff;
+    }
+
+    .custom-btn-check:checked + .custom-btn-outline {
+        background-color: #3498db;
+        color: #fff;
+    }
+
+    /* استایل دکمه اعمال فیلتر */
+    .custom-submit-btn {
+        background-color: #2ecc71;
+        border: none;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-submit-btn:hover {
+        background-color: #27ae60;
+    }
