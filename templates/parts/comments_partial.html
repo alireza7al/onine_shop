@@ -1,0 +1,36 @@
+{% extends 'parts/base.html' %}
+{% block content %}
+	
+
+{% for comment in comments %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong class="card-title">{{ comment.user.username }}</strong>
+                <small class="text-muted">{{ comment.created_date | naturaltime }}</small>
+            </div>
+            <p class="card-text">{{ comment.text }}</p>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                    <span class="badge bg-success me-2 like-comment" data-comment-id="{{ comment.id }}" style="cursor: pointer;">
+                        <i class="bi bi-hand-thumbs-up"></i> <span id="likes-{{ comment.id }}">{{ comment.likes }}</span>
+                    </span>
+                    <span class="badge bg-danger me-2 dislike-comment" data-comment-id="{{ comment.id }}" style="cursor: pointer;">
+                        <i class="bi bi-hand-thumbs-down"></i> <span id="dislikes-{{ comment.id }}">{{ comment.dislikes }}</span>
+                    </span>
+                </div>
+                <div>
+                    {% if request.user == comment.user %}
+                        <a href="{% url 'comment:edit_comment' comment.id %}" class="btn btn-sm btn-outline-warning me-2">
+                            <i class="bi bi-pencil"></i> ویرایش
+                        </a>
+                        <a href="{% url 'comment:delete_comment' comment.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i> حذف
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

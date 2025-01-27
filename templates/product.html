@@ -54,7 +54,7 @@
                     <option value="newest" {% if request.GET.sort_by == 'newest' %}selected{% endif %}>جدیدترین</option>
                     <option value="oldest" {% if request.GET.sort_by == 'oldest' %}selected{% endif %}>قدیمی‌ترین</option>
                     <option value="most_liked" {% if request.GET.sort_by == 'most_liked' %}selected{% endif %}>بیشترین لایک</option>
-                    <option value="most_rated" {% if request.GET.sort_by == 'most_rated' %}selected{% endif %}>بیشترین امتیاز</option>
+                    <option value="most_disliked" {% if request.GET.sort_by == 'most_disliked' %}selected{% endif %}>بیشترین دیس‌لایک</option>
                 </select>
             </form>
         </div>
@@ -63,62 +63,25 @@
         {% if comments %}
             {% for comment in comments %}
                 <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong class="card-title">{{ comment.user.username }}</strong>
-                            <small class="text-muted">{{ comment.created_date | naturaltime }}</small>
-                        </div>
-                        <p class="card-text">{{ comment.text }}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span class="badge bg-success me-2">
-                                    <i class="bi bi-hand-thumbs-up"></i> {{ comment.likes }}
-                                </span>
-                                <span class="badge bg-danger me-2">
-                                    <i class="bi bi-hand-thumbs-down"></i> {{ comment.dislikes }}
-                                </span>
-                                <span class="badge bg-warning me-2">
-                                    <i class="bi bi-flag"></i> {{ comment.reports }}
-                                </span>
-                                <span class="badge bg-primary">
-                                    <i class="bi bi-star"></i> {{ comment.rating }}
-                                </span>
-                            </div>
-                            <div>
-                                <a href="{% url 'comment:reply_to_comment' comment.id %}" class="btn btn-sm btn-outline-primary me-2">
-                                    <i class="bi bi-reply"></i> پاسخ
-                                </a>
-                                <a href="{% url 'comment:rate_comment' comment.id %}" class="btn btn-sm btn-outline-success">
-                                    <i class="bi bi-star"></i> امتیاز
-                                </a>
-                                {% if request.user == comment.user %}
-                                    <a href="{% url 'comment:edit_comment' comment.id %}" class="btn btn-sm btn-outline-warning me-2">
-                                        <i class="bi bi-pencil"></i> ویرایش
-                                    </a>
-                                    <a href="{% url 'comment:delete_comment' comment.id %}" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i> حذف
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <!-- نمایش پاسخ‌ها -->
-                        {% if comment.replies.all %}
-                            <div class="mt-3">
-                                {% for reply in comment.replies.all %}
-                                    <div class="card mt-2">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <strong class="card-title">{{ reply.user.username }}</strong>
-                                                <small class="text-muted">{{ reply.created_date | naturaltime }}</small>
-                                            </div>
-                                            <p class="card-text">{{ reply.text }}</p>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <strong class="card-title">{{ comment.user.username }}</strong>
+            <small class="text-muted">{{ comment.created_date | naturaltime }}</small>
+        </div>
+        <p class="card-text">{{ comment.text }}</p>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+                <button class="btn btn-sm btn-outline-success me-2 like-btn" data-comment-id="{{ comment.id }}">
+                    <i class="bi bi-hand-thumbs-up"></i> <span class="like-count">{{ comment.likes }}</span>
+                </button>
+                <button class="btn btn-sm btn-outline-danger me-2 dislike-btn" data-comment-id="{{ comment.id }}">
+                    <i class="bi bi-hand-thumbs-down"></i> <span class="dislike-count">{{ comment.dislikes }}</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
             {% endfor %}
         {% else %}
             <div class="alert alert-info" role="alert">
@@ -180,16 +143,6 @@
                         لطفاً متن نظر خود را وارد کنید.
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_tagged_users" class="form-label">تگ کردن کاربران (با کاما جدا کنید)</label>
-                    <input 
-                        type="text" 
-                        name="tagged_users" 
-                        id="id_tagged_users" 
-                        class="form-control" 
-                        placeholder="نام کاربری کاربران را وارد کنید"
-                    >
-                </div>
                 <button type="submit" class="btn btn-primary">ارسال نظر</button>
             </form>
         {% else %}
@@ -238,6 +191,62 @@ $(document).on('click', '#add_cart', function(e) {
                 confirmButtonColor: '#d33',
             });
         }
+    });
+});
+{#like & dislike#}
+$(document).ready(function() {
+    $('.like-btn').click(function() {
+        var commentId = $(this).data('comment-id');
+        var likeCountElement = $(this).find('.like-count');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'comment:like_comment' %}",
+            data: {
+                comment_id: commentId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                likeCountElement.text(json.likes);
+            },
+            error: function (xhr, errmsg, err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا!',
+                    text: 'شما قبلا این نظر را لایک کردین: ',
+                    confirmButtonText: 'باشه',
+                    confirmButtonColor: '#d33',
+                });
+            }
+        });
+    });
+
+    $('.dislike-btn').click(function() {
+        var commentId = $(this).data('comment-id');
+        var dislikeCountElement = $(this).find('.dislike-count');
+        
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'comment:dislike_comment' %}",
+            data: {
+                comment_id: commentId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                dislikeCountElement.text(json.dislikes);
+            },
+            error: function (xhr, errmsg, err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا!',
+                    text: 'شما قبلا این نظر را دیس لایک کردین: ' ,
+                    confirmButtonText: 'باشه',
+                    confirmButtonColor: '#d33',
+                });
+            }
+        });
     });
 });
 </script>

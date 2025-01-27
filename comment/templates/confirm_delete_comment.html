@@ -1,0 +1,18 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+
+{% block title %}
+    حذف نظر
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="fw-bold mb-4">حذف نظر</h1>
+    <p>آیا مطمئن هستید که می‌خواهید این نظر را حذف کنید؟</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">حذف</button>
+        <a href="{% url 'comment:comment_history' %}" class="btn btn-secondary">لغو</a>
+    </form>
+</div>
+{% endblock %}

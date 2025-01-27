@@ -64,12 +64,16 @@ def about_view(request):
     return render(request, 'about.html')
 
 def detail_view(request, pk):
+    # دریافت محصول بر اساس شناسه (pk)
     product = get_object_or_404(Product, id=pk)
+
+    # افزایش تعداد بازدیدهای محصول
     Product.objects.filter(id=pk).update(views_count=F('views_count') + 1)
 
-    comments = Comment.objects.filter(product=product, approved_comment=True)
+    # دریافت کامنت‌های تاییدشده مربوط به محصول
+    comments = Comment.objects.filter(product=product)
 
-    # مرتب‌سازی بر اساس تاریخ
+    # مرتب‌سازی کامنت‌ها بر اساس پارامتر دریافتی از کاربر
     sort_by = request.GET.get('sort_by')
     if sort_by == 'newest':
         comments = comments.order_by('-created_date')
@@ -77,19 +81,21 @@ def detail_view(request, pk):
         comments = comments.order_by('created_date')
     elif sort_by == 'most_liked':
         comments = comments.order_by('-likes')
-    elif sort_by == 'most_rated':
-        comments = comments.order_by('-rating')
+    elif sort_by == 'most_disliked':
+        comments = comments.order_by('-dislikes')
 
-    # صفحه‌بندی کامنت‌ها
-    paginator = Paginator(comments, 10)  # نمایش ۱۰ کامنت در هر صفحه
+    # صفحه‌بندی کامنت‌ها (۱۰ کامنت در هر صفحه)
+    paginator = Paginator(comments, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # آماده‌سازی داده‌ها برای ارسال به تمپلیت
     context = {
         'product': product,
         'comments': page_obj,
     }
 
+    # رندر کردن تمپلیت با داده‌های آماده‌شده
     return render(request, 'product.html', context)
 
 def category_view(request, cat):
