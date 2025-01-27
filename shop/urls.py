@@ -14,6 +14,5 @@ urlpatterns = [
     path('product/<int:pk>', views.detail_view, name='product'),
     path('category/<str:cat>', views.category_view, name='category'),
     path('category/page/', views.categories_page, name='categories_page'),
-    path('product/<int:pk>/comment/', views.add_comment_to_product, name='add_comment_to_product'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

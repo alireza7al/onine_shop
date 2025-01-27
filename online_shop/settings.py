@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # for payment
     "azbankgateways",
+    "comment.apps.CommentConfig"
 ]
 
 MERCHANT_ID = "aaaaaaaaaabbbbbbbbbbcccccccccc123456"

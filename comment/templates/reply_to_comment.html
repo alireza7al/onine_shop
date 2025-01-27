@@ -1,0 +1,124 @@
+{% extends 'parts/base.html' %}  <!-- استفاده از base.html پروژه -->
+
+{% block title %}پاسخ به کامنت - {{ parent_comment.product.name }}{% endblock %}
+{% block head %}
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+    .card-header {
+        border-radius: 15px 15px 0 0;
+    }
+    textarea {
+        resize: none; /* غیرفعال کردن تغییر اندازه دستی */
+    }
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">پاسخ به کامنت</h4>
+                </div>
+                <div class="card-body">
+                    <!-- نمایش کامنت والد -->
+                    <div class="mb-4">
+                        <h6 class="text-muted">کامنت اصلی:</h6>
+                        <div class="card bg-light p-3">
+                            <p class="mb-0">{{ parent_comment.text }}</p>
+                            <small class="text-muted">
+                                نوشته شده توسط {{ parent_comment.user.username }} در {{ parent_comment.created_date }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- فرم پاسخ به کامنت -->
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <!-- نمایش خطاهای فرم -->
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>خطا!</strong> لطفاً موارد زیر را بررسی کنید:
+                                <ul>
+                                    {% for field, errors in form.errors.items %}
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- فیلد متن پاسخ -->
+                        <div class="mb-3">
+                            <label for="{{ form.text.id_for_label }}" class="form-label">متن پاسخ:</label>
+                            <textarea
+                                name="{{ form.text.name }}"
+                                id="{{ form.text.id_for_label }}"
+                                class="form-control {% if form.text.errors %}is-invalid{% endif %}"
+                                rows="5"
+                                required
+                            >{{ form.text.value|default_if_none:'' }}</textarea>
+                            <div class="invalid-feedback">
+                                لطفاً متن پاسخ را وارد کنید.
+                            </div>
+                        </div>
+
+                        <!-- دکمه‌های اقدام -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-send me-2"></i>ارسال پاسخ
+                            </button>
+                            <a href="{% url 'shop:product' parent_comment.product.pk %}" class="btn btn-secondary">
+                                <i class="bi bi-x me-2"></i>انصراف
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    // اعتبارسنجی فرم با استفاده از Bootstrap
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+{% endblock %}

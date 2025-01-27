@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Category, Comment
 from django.contrib import messages
 from django.db.models import Q, F
-from django.utils import timezone
-from .forms import CommentForm
-from django.contrib.auth.decorators import login_required
-
+from .models import Product, Category
+from comment.models import Comment
+from django.core.paginator import Paginator
 
 def index_view(request):
     all_products = Product.objects.all()
@@ -49,7 +47,6 @@ def index_view(request):
     }
     return render(request, 'index.html', context)
 
-
 def search_view(request):
     if request.method == 'POST':
         search_value = request.POST.get('search')
@@ -63,51 +60,38 @@ def search_view(request):
     else:
         return render(request, 'search.html', {})
 
-
 def about_view(request):
     return render(request, 'about.html')
 
-
 def detail_view(request, pk):
     product = get_object_or_404(Product, id=pk)
-
     Product.objects.filter(id=pk).update(views_count=F('views_count') + 1)
 
-    comments = product.comments.filter(approved_comment=True)
+    comments = Comment.objects.filter(product=product, approved_comment=True)
 
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.product = product
-            comment.user = request.user
-            comment.save()
-            return redirect('shop:product', pk=product.id)
-    else:
-        form = CommentForm()
+    # مرتب‌سازی بر اساس تاریخ
+    sort_by = request.GET.get('sort_by')
+    if sort_by == 'newest':
+        comments = comments.order_by('-created_date')
+    elif sort_by == 'oldest':
+        comments = comments.order_by('created_date')
+    elif sort_by == 'most_liked':
+        comments = comments.order_by('-likes')
+    elif sort_by == 'most_rated':
+        comments = comments.order_by('-rating')
+
+    # صفحه‌بندی کامنت‌ها
+    paginator = Paginator(comments, 10)  # نمایش ۱۰ کامنت در هر صفحه
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'product': product,
-        'comments': comments,
-        'form': form,
+        'comments': page_obj,
     }
 
     return render(request, 'product.html', context)
 
-@login_required
-def add_comment_to_product(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.product = product
-            comment.user = request.user
-            comment.save()
-            return redirect('shop:product', pk=product.pk)
-    else:
-        form = CommentForm()
-    return render(request, 'add_comment_to_product.html', {'form': form})
 def category_view(request, cat):
     cat = cat.replace('_', ' ')
     try:
@@ -122,13 +106,9 @@ def category_view(request, cat):
         return redirect('shop:home')
         messages.success(request, 'دسته بندی وجود نداشت !')
 
-
 def categories_page(request):
     all_category = Category.objects.all()
     context = {
         'all_category': all_category
     }
     return render(request, 'categories_page.html', context)
-
-
-
