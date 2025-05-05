@@ -5,7 +5,6 @@ from django.contrib import messages
 from cart.cart import Cart
 from .forms import SingUpForm, ProfileUpdateForm, UpdatePasswordForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -13,8 +12,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib import messages
-from django.urls import reverse
 from .models import Profile
 from django.contrib.auth import login
 
