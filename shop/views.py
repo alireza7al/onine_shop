@@ -5,8 +5,9 @@ from .models import Product, Category
 from comment.models import Comment
 from django.core.paginator import Paginator
 
+
 def index_view(request):
-    all_products = Product.objects.all()
+    all_products = Product.objects.all().order_by('-created_at')
 
     # فیلتر بر اساس دسته‌بندی
     category_filter = request.GET.get('category')
@@ -41,11 +42,17 @@ def index_view(request):
     if on_sale_filter:
         all_products = all_products.filter(is_sale=True)
 
+    # صفحه‌بندی - 12 محصول در هر صفحه
+    paginator = Paginator(all_products, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'products': all_products,
-        'categories': Category.objects.all()  # برای نمایش دسته‌بندی‌ها در تمپلیت
+        'products': page_obj,
+        'categories': Category.objects.all()
     }
     return render(request, 'index.html', context)
+
 
 def search_view(request):
     if request.method == 'POST':
@@ -60,8 +67,10 @@ def search_view(request):
     else:
         return render(request, 'search.html', {})
 
+
 def about_view(request):
     return render(request, 'about.html')
+
 
 def detail_view(request, pk):
     # دریافت محصول بر اساس شناسه (pk)
@@ -71,7 +80,7 @@ def detail_view(request, pk):
     Product.objects.filter(id=pk).update(views_count=F('views_count') + 1)
 
     # دریافت کامنت‌های تاییدشده مربوط به محصول
-    comments = Comment.objects.filter(product=product)
+    comments = Comment.objects.filter(product=product, approved_comment=True)
 
     # مرتب‌سازی کامنت‌ها بر اساس پارامتر دریافتی از کاربر
     sort_by = request.GET.get('sort_by')
@@ -98,6 +107,7 @@ def detail_view(request, pk):
     # رندر کردن تمپلیت با داده‌های آماده‌شده
     return render(request, 'product.html', context)
 
+
 def category_view(request, cat):
     cat = cat.replace('_', ' ')
     try:
@@ -111,6 +121,7 @@ def category_view(request, cat):
     except Category.DoesNotExist:
         return redirect('shop:home')
         messages.success(request, 'دسته بندی وجود نداشت !')
+
 
 def categories_page(request):
     all_category = Category.objects.all()

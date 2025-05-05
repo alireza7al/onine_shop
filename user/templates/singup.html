@@ -1,120 +1,213 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>ثبت نام در فروشگاه</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazir', sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .signup-header {
+            background: #4a6cf7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .signup-header h1 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .signup-body {
+            padding: 20px;
+        }
+
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert i {
+            margin-left: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .show-password {
+            display: flex;
+            align-items: center;
+            margin: 10px 0 15px;
+            font-size: 0.8rem;
+        }
+
+        .show-password input {
+            margin-left: 8px;
+            width: auto;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .signup-footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .signup-footer a {
+            color: #4a6cf7;
+            text-decoration: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.7rem;
+            margin-top: 3px;
+        }
+    </style>
 </head>
 <body>
+    <div class="signup-card">
+        <div class="signup-header">
+            <h1>ثبت نام سریع</h1>
+        </div>
 
-    <div class="alert">
-        {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-        {% endif %}
+        <div class="signup-body">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" action="{% url 'user:signup' %}">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">
+                        {% if field.name == 'username' %}<i class="fas fa-user"></i>{% endif %}
+                        {% if field.name == 'email' %}<i class="fas fa-envelope"></i>{% endif %}
+                        {% if field.name == 'password1' %}<i class="fas fa-lock"></i>{% endif %}
+                        {% if field.name == 'password2' %}<i class="fas fa-lock"></i>{% endif %}
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    <div class="error-message" id="error-{{ field.name }}"></div>
+                </div>
+                {% endfor %}
+
+                <div class="show-password">
+                    <input type="checkbox" id="show-password">
+                    <label for="show-password">نمایش رمز عبور</label>
+                </div>
+
+                <button type="submit" class="signup-btn">
+                    <i class="fas fa-user-plus"></i> ثبت نام
+                </button>
+            </form>
+        </div>
+
+        <div class="signup-footer">
+            حساب دارید؟ <a href="{% url 'user:login' %}">وارد شوید</a>
+        </div>
     </div>
 
-    <div class="wrapper">
-        <div class="shape shape--one"></div>
-        <div class="shape shape--two"></div>
-        <form method="POST" action="{% url 'user:signup' %}" class="form">
-            {% csrf_token %}
-            <h2 class="form__title">ثبت نام</h2>
-            {% for field in form %}
-            <div class="form__input-wrapper">
-                <label for="{{ field.id_for_label }}" class="form__label">{{ field.label }}</label>
-                {{ field }}
-                <div class="error"></div>
-                {% if field.help_text %}
-                    <div class="help-text">
-                        {{ field.help_text }}
-                    </div>
-                {% endif %}
-            </div>
-            {% endfor %}
-            <div class="form__input-wrapper">
-                <label for="show-password" class="form__label">نمایش رمز عبور</label>
-                <input type="checkbox" id="show-password" class="form__checkbox">
-            </div>
-            <button type="submit" class="form__submit-btn">ثبت نام</button>
-        </form>
-    </div>
-
-<script>
-document.querySelector('form').addEventListener('submit', function(event) {
-    const form = event.target;
-    let hasErrors = false;
-
-    // Clear previous errors
-    form.querySelectorAll('.error').forEach(errorDiv => {
-        errorDiv.innerText = '';
-    });
-
-    // Check for required fields
-    form.querySelectorAll('input[required]').forEach(input => {
-        if (!input.value.trim()) {
-            const errorDiv = input.parentElement.querySelector('.error');
-            errorDiv.innerText = `${input.previousElementSibling.innerText} نمی‌تواند خالی باشد.`;
-            hasErrors = true;
-        }
-    });
-
-    // Check for email format
-    const emailInput = form.querySelector('input[type="email"]');
-    if (emailInput && !emailInput.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-        const errorDiv = emailInput.parentElement.querySelector('.error');
-        errorDiv.innerText = 'ایمیل وارد شده معتبر نیست.';
-        hasErrors = true;
-    }
-
-    // Check for password match and length
-    const password1 = form.querySelector('input[name="password1"]');
-    const password2 = form.querySelector('input[name="password2"]');
-    if (password1 && password2) {
-        if (!password1.value.trim()) {
-            const errorDiv = password1.parentElement.querySelector('.error');
-            errorDiv.innerText = 'رمز عبور نمی‌تواند خالی باشد.';
-            hasErrors = true;
-        } else if (password1.value.length < 8) {
-            const errorDiv = password1.parentElement.querySelector('.error');
-            errorDiv.innerText = 'رمز عبور باید حداقل 8 کاراکتر باشد.';
-            hasErrors = true;
-        } else if (password1.value !== password2.value) {
-            const errorDiv = password2.parentElement.querySelector('.error');
-            errorDiv.innerText = 'رمز عبور و تکرار آن باید یکسان باشند.';
-            hasErrors = true;
-        } else {
-            // Check for password complexity (letters, numbers, and special characters)
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-            if (!password1.value.match(passwordRegex)) {
-                const errorDiv = password1.parentElement.querySelector('.error');
-                errorDiv.innerText = 'رمز عبور باید شامل حداقل یک حرف، یک عدد و یک کاراکتر خاص باشد.';
-                hasErrors = true;
+    <script>
+        document.getElementById('show-password').addEventListener('change', function() {
+            const password1 = document.querySelector('input[name="password1"]');
+            const password2 = document.querySelector('input[name="password2"]');
+            if (this.checked) {
+                password1.type = 'text';
+                password2.type = 'text';
+            } else {
+                password1.type = 'password';
+                password2.type = 'password';
             }
-        }
-    }
+        });
 
-    // Prevent form submission if there are errors
-    if (hasErrors) {
-        event.preventDefault();
-    }
-});
+        document.querySelector('form').addEventListener('submit', function(e) {
+            let hasError = false;
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
 
-document.getElementById('show-password').addEventListener('change', function() {
-    const password1 = document.querySelector('input[name="password1"]');
-    const password2 = document.querySelector('input[name="password2"]');
-    if (this.checked) {
-        password1.type = 'text';
-        password2.type = 'text';
-    } else {
-        password1.type = 'password';
-        password2.type = 'password';
-    }
-});
-</script>
+            const email = document.querySelector('input[name="email"]');
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                document.getElementById('error-email').textContent = 'ایمیل معتبر نیست';
+                hasError = true;
+            }
+
+            const password1 = document.querySelector('input[name="password1"]');
+            const password2 = document.querySelector('input[name="password2"]');
+            if (password1.value.length < 8) {
+                document.getElementById('error-password1').textContent = 'حداقل 8 کاراکتر';
+                hasError = true;
+            }
+            if (password1.value !== password2.value) {
+                document.getElementById('error-password2').textContent = 'رمزها مطابقت ندارند';
+                hasError = true;
+            }
+
+            if (hasError) e.preventDefault();
+        });
+    </script>
 </body>
 </html>

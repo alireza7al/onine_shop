@@ -1,50 +1,176 @@
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- Navigation Bar - نوار ناوبری فروشگاه -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="#!"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <!-- لوگو و نام فروشگاه -->
+        <a class="navbar-brand fw-bold" href="{% url 'shop:home' %}">
+            <i class="fas fa-store me-2"></i>فروشگاه آنلاین
+        </a>
+        
+        <!-- دکمه منوی همبرگری برای نمایش در موبایل -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="نمایش منو">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <!-- بخش اصلی منو -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <!-- منوی سمت راست -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- آیتم جستجو -->
                 <li class="nav-item">
-                    <a href="{% url 'shop:search' %}" class="nav-link " aria-current="page">
-                            <i class="fas fa-search">search</i>
+                    <a class="nav-link" href="{% url 'shop:search' %}" title="جستجوی محصولات">
+                        <i class="fas fa-search me-1"></i> جستجو
                     </a>
                 </li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'shop:home' %}">خانه</a></li>
-                <li class="nav-item"></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'shop:about' %}">درباره ما</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'payment:order_history' %}">تاریخچه سفارشات</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'comment:comment_history' %}">تاریخچه نظرات</a></li>
-
-                {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'user:logout' %}">خارج شدن</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'user:profile_update' %}">ویرایش پروفایل</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'user:login' %}">وارد شدن</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'user:signup' %}">ثبت نام</a></li>
-                {% endif %}
-
-
+                
+                <!-- آیتم خانه -->
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'shop:home' %}" title="صفحه اصلی">
+                        <i class="fas fa-home me-1"></i> خانه
+                    </a>
+                </li>
+                
+                <!-- منوی کشویی فروشگاه -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">فروشگاه</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'shop:categories_page' %}">دسته بندی ها </a></li>
-                        <li><a class="dropdown-item" href="{% url 'shop:category' 'کتاب' %}">کتاب</a></li>
-                        <li><a class="dropdown-item" href="{% url 'shop:category' 'لب_تاب' %}">لب تاب </a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">محصولات محبوب</a></li>
-                        <li><a class="dropdown-item" href="#!">محصولات جدید</a></li>
+                    <a class="nav-link dropdown-toggle" href="#" id="shopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="دسته‌بندی محصولات">
+                        <i class="fas fa-store me-1"></i> فروشگاه
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="shopDropdown">
+                        <li><a class="dropdown-item" href="{% url 'shop:categories_page' %}">همه دسته‌بندی‌ها</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'shop:category' 'کتاب' %}">کتاب‌ها</a></li>
+                        <li><a class="dropdown-item" href="{% url 'shop:category' 'لب_تاب' %}">لپ‌تاپ‌ها</a></li>
+                        <li><hr class="dropdown-divider"></li>
                     </ul>
                 </li>
+                
+                <!-- آیتم درباره ما -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop:about' %}" title="درباره ما">
+                        <i class="fas fa-info-circle me-1"></i> درباره ما
+                    </a>
+                </li>
+                
+                <!-- آیتم تاریخچه نظرات -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% if user.is_authenticated %}{% url 'comment:comment_history' %}{% else %}javascript:void(0);{% endif %}" 
+                       title="تاریخچه نظرات"
+                       onclick="{% if not user.is_authenticated %}showLoginAlert('برای مشاهده تاریخچه نظرات، لطفاً وارد حساب کاربری خود شوید');{% endif %}">
+                        <i class="fas fa-comment-alt me-1"></i> نظرات من
+                    </a>
+                </li>
             </ul>
-            <form class="d-flex">
-                <a class="btn btn-outline-dark" href="{% url 'cart:cart' %}">
-                    <i class="bi-cart-fill me-1"></i>
-                    سبد خرید
-                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">{{ cart_quantity }}</span>
+
+            <!-- منوی سمت چپ (ابزارها و حساب کاربری) -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- کیف پول -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-success dropdown-toggle py-2" type="button" 
+                            id="walletMenu" data-bs-toggle="dropdown" aria-expanded="false"
+                            title="مدیریت کیف پول">
+                        <i class="bi bi-wallet2 me-1"></i>
+                        <span class="d-none d-md-inline">کیف پول</span>
+                        <span class="badge bg-success ms-1">{% if user.is_authenticated %}{{ request.user.wallet.balance|default:"0" }}{% else %}0{% endif %}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="walletMenu">
+                        <li class="px-3 py-2 small text-muted">موجودی قابل استفاده</li>
+                        <li class="px-3 mb-2 fw-bold">{% if user.is_authenticated %}{{ request.user.wallet.balance|default:"0" }}{% else %}0{% endif %} تومان</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'payment:wallet_detail' %}{% else %}javascript:void(0);{% endif %}" 
+                               onclick="{% if not user.is_authenticated %}showLoginAlert('برای مشاهده تاریخچه تراکنش‌ها، لطفاً وارد حساب کاربری خود شوید');{% endif %}">
+                                <i class="fas fa-history me-2"></i> تاریخچه تراکنش‌ها
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-primary" href="{% if user.is_authenticated %}{% url 'payment:wallet_deposit' %}{% else %}javascript:void(0);{% endif %}" 
+                               onclick="{% if not user.is_authenticated %}showLoginAlert('برای شارژ کیف پول، لطفاً وارد حساب کاربری خود شوید');{% endif %}">
+                                <i class="fas fa-plus-circle me-2"></i> شارژ کیف پول
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- سبد خرید -->
+                <a href="{% url 'cart:cart' %}" class="btn btn-outline-primary position-relative py-2" 
+                   title="مشاهده سبد خرید">
+                    <i class="bi bi-cart3"></i>
+                    <span id="cart_quantity" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ cart_quantity|default:"0" }}
+                    </span>
+                    <span class="d-none d-md-inline ms-1">سبد خرید</span>
                 </a>
-            </form>
+
+                <!-- حساب کاربری -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle py-2" type="button" 
+                            id="accountMenu" data-bs-toggle="dropdown" aria-expanded="false"
+                            title="مدیریت حساب کاربری">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="d-none d-md-inline">حساب کاربری</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
+                        {% if user.is_authenticated %}
+                            <li><span class="dropdown-item-text">سلام {{ user.username }}!</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'payment:order_history' %}">
+                                    <i class="fas fa-receipt me-2"></i> سفارش‌های من
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" href="{% url 'user:profile_update' %}">
+                                    <i class="fas fa-user-edit me-2"></i> ویرایش پروفایل
+                                </a>
+                            </li>
+                            <li>
+    <a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'user:update_password' %}{% else %}javascript:void(0);{% endif %}"
+       onclick="{% if not user.is_authenticated %}showLoginAlert('برای تغییر رمز عبور، لطفاً وارد حساب کاربری خود شوید');{% endif %}">
+        <i class="fas fa-key me-2"></i> تغییر رمز عبور
+    </a>
+</li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{% url 'user:logout' %}">
+                                    <i class="fas fa-sign-out-alt me-2"></i> خروج
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'user:login' %}">
+                                    <i class="fas fa-sign-in-alt me-2"></i> ورود
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'user:signup' %}">
+                                    <i class="fas fa-user-plus me-2"></i> ثبت‌نام
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
+
+<!-- فضای خالی برای جلوگیری از پوشیده شدن محتوا توسط نوار ثابت -->
+<div style="height: 70px;"></div>
+
+<!-- اضافه کردن اسکریپت SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showLoginAlert(message) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'نیاز به ورود',
+            text: message,
+            confirmButtonText: 'ورود',
+            showCancelButton: true,
+            cancelButtonText: 'انصراف'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'user:login' %}?next=" + encodeURIComponent(window.location.pathname);
+            }
+        });
+    }
+</script>

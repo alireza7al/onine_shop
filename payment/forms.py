@@ -1,5 +1,7 @@
 from django import forms
 from .models import ShippingAddress
+from django.core.validators import MinValueValidator
+
 
 class ShippingAddressForm(forms.ModelForm):
     class Meta:
@@ -31,3 +33,14 @@ class ShippingAddressForm(forms.ModelForm):
             'Shipping_address1': forms.TextInput(attrs={'class': 'form-control'}),
             'Shipping_postal_code': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class DepositForm(forms.Form):
+    amount = forms.IntegerField(
+        label='مبلغ شارژ (تومان)',
+        validators=[MinValueValidator(10000, 'حداقل مبلغ شارژ ۱۰,۰۰۰ تومان است')],
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'مبلغ به تومان'
+        })
+    )

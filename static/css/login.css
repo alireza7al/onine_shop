@@ -1,138 +1,233 @@
-html {
-    box-sizing: border-box;
-}
-*, 
-*::after, 
-*::before{
-    box-sizing: inherit;
+/* تنظیمات کلی */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Vazir', sans-serif;
 }
-body{
-    font-family: "Poppins";
-    background-color:  #080710;
 
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
+    align-items: center;
 }
 
-input, button{
-    font-family: inherit;
-    border: none;
-    outline: none;
-}
-
-.wrapper{
-    width: 400px;
+/* کارت احراز هویت */
+.auth-container {
+    width: 100%;
+    max-width: 450px;
     position: relative;
 }
 
-.shape{
-    width: 200px;
-    height: 200px;
-    border-radius: 100%;
-    position: absolute;
-    z-index: -1;
-}
-.shape--one{
-    background: linear-gradient(#0D47A1, #42A5F5);
-    top: -80px;
-    left: -80px;
-}
-.shape--two{
-    background: linear-gradient(45deg, #E65100, #FFA726);
-    bottom: -90px;
-    right: -60px;
+.auth-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 20px;
 }
 
-.form{
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255,255,255,0.13);
-    color: #fff;
-    padding: 50px 35px 35px 35px;
-    border: 2px solid rgba(255,255,255,0.13);
-    border-radius: 10px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
-}
-
-.form__title{
-    font-size: 32px;
+.auth-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-.form__input-wrapper{
-    margin-bottom: 26px;
-}
-.form__label{
-    font-size: 16px;
-}
-.form__input{
-    font-size: 14px;
-    font-weight: 300;
-    display: block;
-    height: 50px;
-    background-color: rgba(255,255,255,0.07);
-    padding: 0 10px;
-    width: 100%;
-    margin-top: 8px;
-    color: #fff;
-    border-radius: 4px;
-}
-.form__input::placeholder{
-    color: #e5e5e5;
+.auth-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
 }
 
-.form__submit-btn{
-    background-color: #fff;
-    color: #080710;
-    border-radius: 4px;
-    text-align: center;
-    padding: 15px 0;
-    display: block;
-    font-size: 18px;
-    width: 100%;
-    margin-top: 46px;
-    font-weight: bold;
+.auth-header h1 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    font-weight: 600;
 }
-.alert {
+
+/* فرم ورود */
+.auth-form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-group label i {
+    margin-left: 8px;
+    color: #7f8c8d;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+.toggle-password {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #ff5252; /* رنگ پس زمینه */
-    color: #fff; /* رنگ متن */
-    padding: 10px 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(210, 190, 190, 0.2);
-    z-index: 1000; /* برای اطمینان از نمایش بالاتر از سایر عناصر */
-    transition: opacity 0.5s ease-in-out; /* افکت محو شدن */
+    left: 15px;
+    top: 40px;
+    cursor: pointer;
+    color: #7f8c8d;
 }
 
-.alert.fade-out {
-    opacity: 0;
+/* گزینه‌های فرم */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 0.9rem;
 }
-.error {
-    color: #ec5d5d;
-    font-size: 111%;
-    margin-top: 5px;
-    }
-.help-text {
-    color: #666;
-    font-size: 0.8em;
-    margin-top: 5px;
-    }
+
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-left: 8px;
+}
+
+.forgot-password {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* دکمه ورود */
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.auth-btn:hover {
+    background-color: #2980b9;
+}
+
+.auth-btn i {
+    margin-left: 8px;
+}
+
+/* بخش ثبت نام */
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.register-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    color: #3498db;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.register-link:hover {
+    background-color: #e9ecef;
+}
+
+.register-link i {
+    margin-left: 8px;
+}
+
+/* دکمه بازگشت به خانه */
+.home-btn {
+    display: block;
+    text-align: center;
+    color: #7f8c8d;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+.home-btn i {
+    margin-left: 8px;
+}
+
+/* پیغام‌ها */
+.alert-messages {
+    margin-bottom: 20px;
+}
+
 .alert {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.5s;
+}
+
+.alert i {
+    margin-left: 8px;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert.error {
     background-color: #f8d7da;
     color: #721c24;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    display: none;
+}
+
+.alert.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* واکنشگرایی */
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 20px;
     }
-    .fade-out {
-        opacity: 0;
-        transition: opacity 1s;
+
+    .auth-header h1 {
+        font-size: 1.3rem;
     }
+
+    .form-group input {
+        padding: 10px 12px;
+    }
+}

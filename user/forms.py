@@ -2,30 +2,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django import forms
 from .models import Profile
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth import get_user_model
+from .models import Profile
 from django.core.exceptions import ValidationError
 
 
 class SingUpForm(UserCreationForm):
-    # first_name = forms.CharField(
-    #     label='',
-    #     max_length=30,
-    #     widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خود را وارد کنید'}),
-    #
-    # )
-    #
-    # last_name = forms.CharField(
-    #     label='',
-    #     max_length=30,
-    #     widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'نام خانوادگی خود را وارد کنید'}),
-    #
-    # )
-    #
-    # email = forms.EmailField(
-    #     label='',
-    #     widget=forms.TextInput(attrs={'class': 'form__input', 'placeholder': 'ایمیل خود را وارد کنید '}),
-    #     help_text='ایمیل معتبر وارد کنید'
-    # )
-
     username = forms.CharField(
         label='',
         max_length=20,
@@ -38,7 +21,7 @@ class SingUpForm(UserCreationForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form__input',
-                'placeholder': 'رمز خود را وارد کنید ',
+                'placeholder': 'رمز خود را وارد کنید',
                 'name': 'password',
                 'type': 'password',
             }
@@ -51,7 +34,7 @@ class SingUpForm(UserCreationForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form__input',
-                'placeholder': 'رمز خود را دوباره وارد کنید ',
+                'placeholder': 'رمز خود را دوباره وارد کنید',
                 'name': 'password',
                 'type': 'password',
             }
@@ -61,7 +44,7 @@ class SingUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'password1', 'password2')  # بدون ایمیل
 
 
 class ProfileUpdateForm(forms.ModelForm):
@@ -148,3 +131,7 @@ class UpdatePasswordForm(SetPasswordForm):
             'class': 'form__input',
             'placeholder': 'رمز عبور جدید را دوباره وارد کنید',
         })
+
+
+
+

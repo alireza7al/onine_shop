@@ -1,62 +1,176 @@
 {% extends 'parts/base.html' %}
 {% load humanize %}
+
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">جزئیات سفارش شماره {{ order.id }}</h2>
-    <div class="card shadow">
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-receipt me-2 text-primary"></i>
+            سفارش شماره #{{ order.id }}
+        </h2>
+        <span class="badge fs-6
+            {% if order.status == 'paid' %}bg-success
+            {% elif order.status == 'canceled' %}bg-danger
+            {% else %}bg-warning{% endif %}">
+            {{ order.get_status_display }}
+        </span>
+    </div>
+
+    <div class="card border-0 shadow-lg mb-4">
         <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <p><strong>تاریخ سفارش:</strong> {{ order.created_at|date:"Y/m/d H:i" }}</p>
-                    <p><strong>مبلغ کل:</strong> {{ order.total_price|intcomma }} تومان</p>
-                    <p><strong>وضعیت پرداخت:</strong>
+            <div class="row">
+                <!-- بخش اطلاعات پرداخت -->
+                <div class="col-md-6 border-end">
+                    <h5 class="mb-3 text-primary">
+                        <i class="fas fa-credit-card me-2"></i>اطلاعات پرداخت
+                    </h5>
+                    <div class="ps-3">
+                        <p class="d-flex justify-content-between">
+                            <span class="text-muted">تاریخ سفارش:</span>
+                            <strong>{{ order.created_at|date:"Y/m/d H:i" }}</strong>
+                        </p>
+                        <p class="d-flex justify-content-between">
+                            <span class="text-muted">مبلغ کل:</span>
+                            <strong class="text-success">{{ order.total_price|intcomma }} تومان</strong>
+                        </p>
+                        <p class="d-flex justify-content-between">
+                            <span class="text-muted">وضعیت پرداخت:</span>
+                            <span class="badge
+                                {% if order.is_paid %}bg-success{% else %}bg-danger{% endif %}">
+                                {% if order.is_paid %}پرداخت شده{% else %}پرداخت نشده{% endif %}
+                            </span>
+                        </p>
+
                         {% if order.is_paid %}
-                        <span class="badge bg-success">پرداخت شده</span>
-                        {% else %}
-                        <span class="badge bg-danger">پرداخت نشده</span>
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <p class="d-flex justify-content-between">
+                                <span class="text-muted">روش پرداخت:</span>
+                                <span class="badge
+                                    {% if order.payment_method == 'wallet' %}bg-info
+                                    {% else %}bg-primary{% endif %}">
+                                    {{ order.get_payment_method_display }}
+                                </span>
+                            </p>
+                            <p class="d-flex justify-content-between">
+                                <span class="text-muted">تاریخ پرداخت:</span>
+                                <strong>{{ order.updated_at|date:"Y/m/d H:i" }}</strong>
+                            </p>
+                            {% if order.payment_method == 'gateway' %}
+                            <p class="d-flex justify-content-between">
+                                <span class="text-muted">کد پیگیری:</span>
+                                <strong>{{ order.ref_id }}</strong>
+                            </p>
+                            {% endif %}
+                        </div>
                         {% endif %}
-                    </p>
+                    </div>
                 </div>
+
+                <!-- بخش اطلاعات ارسال -->
                 <div class="col-md-6">
-                    <p><strong>آدرس ارسال:</strong></p>
-                    <p>نام و نام خانوادگی : {{ order.shipping_address.Shipping_full_name }}</p>
-                    <p>استان : {{ order.shipping_address.Shipping_province }}</p>
-                    <p>شهر: {{ order.shipping_address.Shipping_city }} </p>
-                    <p>ادرس : {{ order.shipping_address.Shipping_address1 }}</p>
-                    <p>کد پستی: {{ order.shipping_address.Shipping_postal_code }}</p>
+                    <h5 class="mb-3 text-primary">
+                        <i class="fas fa-truck me-2"></i>اطلاعات ارسال
+                    </h5>
+                    <div class="ps-3">
+                        <div class="mb-2">
+                            <p class="mb-1 text-muted">تحویل گیرنده:</p>
+                            <p class="fw-bold">{{ order.shipping_address.Shipping_full_name }}</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-2">
+                                <p class="mb-1 text-muted">استان:</p>
+                                <p>{{ order.shipping_address.Shipping_province }}</p>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <p class="mb-1 text-muted">شهر:</p>
+                                <p>{{ order.shipping_address.Shipping_city }}</p>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <p class="mb-1 text-muted">آدرس:</p>
+                            <p>{{ order.shipping_address.Shipping_address1 }}</p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="mb-1 text-muted">کد پستی:</p>
+                            <p>{{ order.shipping_address.Shipping_postal_code }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <h4 class="mb-3">محصولات سفارش:</h4>
+    <!-- بخش محصولات سفارش -->
+    <div class="card border-0 shadow-lg">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="fas fa-box-open me-2"></i>محصولات سفارش
+            </h5>
+        </div>
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover text-center">
+                <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col">نام محصول</th>
-                            <th scope="col">تعداد</th>
-                            <th scope="col">قیمت واحد</th>
-                            <th scope="col">قیمت کل</th>
+                            <th width="45%">محصول</th>
+                            <th width="15%">تعداد</th>
+                            <th width="20%">قیمت واحد</th>
+                            <th width="20%">قیمت کل</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in order.items.all %}
                         <tr>
-                            <td>{{ item.product.name }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ item.product.image.url }}"
+                                         alt="{{ item.product.name }}"
+                                         class="img-thumbnail me-3"
+                                         width="60">
+                                    <div>
+                                        <h6 class="mb-1">{{ item.product.name }}</h6>
+                                        <small class="text-muted">کد: {{ item.product.id }}</small>
+                                    </div>
+                                </div>
+                            </td>
                             <td>{{ item.quantity }}</td>
                             <td>{{ item.price|intcomma }} تومان</td>
-                            <td>{{ item.total_price|intcomma }} تومان</td>
+                            <td class="fw-bold">{{ item.total_price|intcomma }} تومان</td>
                         </tr>
                         {% endfor %}
+                        <tr class="table-active">
+                            <td colspan="3" class="text-end fw-bold">جمع کل سفارش:</td>
+                            <td class="fw-bold text-success">{{ order.total_price|intcomma }} تومان</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    {% if order.is_paid %}
+    <div class="alert alert-success mt-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-check-circle fa-2x me-3"></i>
+            <div>
+                <h5 class="alert-heading mb-1">سفارش با موفقیت پرداخت شد!</h5>
+                {% if order.payment_method == 'gateway' %}
+                <p class="mb-0">کد رهگیری پرداخت: <strong>{{ order.ref_id }}</strong></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="text-center mt-4">
-        <a href="{% url 'payment:order_history' %}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> بازگشت به تاریخچه سفارشات
+        <a href="{% url 'payment:order_history' %}" class="btn btn-outline-secondary px-4">
+            <i class="fas fa-arrow-left me-2"></i> بازگشت به تاریخچه سفارشات
         </a>
+        {% if not order.is_paid %}
+        <a href="{% url 'payment:choose_payment_method' order.id %}" class="btn btn-primary px-4 ms-2">
+            <i class="fas fa-credit-card me-2"></i> پرداخت سفارش
+        </a>
+        {% endif %}
     </div>
 </div>
-    <br><br><br><br>
 {% endblock %}

@@ -1,47 +1,335 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>ورود به حساب کاربری</title>
+    <!-- فونت Vazir از CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <!-- آیکون‌های Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* استایل‌های اختصاصی */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazir', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .auth-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .auth-header h1 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .auth-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .form-group label i {
+            margin-left: 8px;
+            color: #7f8c8d;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .toggle-password {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-left: 8px;
+        }
+
+        .forgot-password {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auth-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .auth-btn i {
+            margin-left: 8px;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .register-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            color: #3498db;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .register-link:hover {
+            background-color: #e9ecef;
+        }
+
+        .register-link i {
+            margin-left: 8px;
+        }
+
+        .home-btn {
+            display: block;
+            text-align: center;
+            color: #7f8c8d;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        .home-btn i {
+            margin-left: 8px;
+        }
+
+        .alert-messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+
+        .alert i {
+            margin-left: 8px;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        @media (max-width: 576px) {
+            .auth-card {
+                padding: 20px;
+            }
+
+            .auth-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .form-group input {
+                padding: 10px 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <div class="alert">
-        {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-        {% endif %}
-    </div>
-
-    <div class="wrapper">
-        <div class="shape shape--one"></div>
-        <div class="shape shape--two"></div>
-        <form method="POST" action="{% url 'user:login' %}" class="form">
-            {% csrf_token %}
-            <h2 class="form__title">وارد شوید</h2>
-            <div class="form__input-wrapper">
-                <label class="form__label" for="username">Username</label>
-                <input type="text" class="form__input" name="username" placeholder="نام کاربری را وارد کنید">
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- لوگوی سایت -->
+            <div class="auth-header">
+                <img src="{% static 'images/logo.png' %}" alt="لوگوی فروشگاه" class="auth-logo">
+                <h1>ورود به حساب کاربری</h1>
             </div>
-            <div>
-                <label class="form__label" for="password">Password</label>
-                <input type="text" class="form__input" name="password" placeholder="رمز عبور را وارد کنید">
+
+            <!-- نمایش پیغام‌ها -->
+            {% if messages %}
+            <div class="alert-messages">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-            <button type="submit" class="form__submit-btn">ورود</button>
-        </form>
+            {% endif %}
+
+            <!-- فرم ورود -->
+            <form method="POST" action="{% url 'user:login' %}" class="auth-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> نام کاربری
+                    </label>
+                    <input type="text" id="username" name="username" placeholder="نام کاربری خود را وارد کنید" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> رمز عبور
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="رمز عبور خود را وارد کنید" required>
+                    <span class="toggle-password" onclick="togglePassword()">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember"> مرا به خاطر بسپار
+                    </label>
+
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> ورود به حساب
+                </button>
+            </form>
+
+            <!-- بخش ثبت نام -->
+            <div class="auth-footer">
+                <p>حساب کاربری ندارید؟</p>
+                <a href="{% url 'user:signup' %}" class="register-link">
+                    <i class="fas fa-user-plus"></i> ایجاد حساب جدید
+                </a>
+            </div>
+        </div>
+
+        <!-- دکمه بازگشت به خانه -->
+        <a href="{% url 'shop:home' %}" class="home-btn">
+            <i class="fas fa-home"></i> بازگشت به صفحه اصلی
+        </a>
     </div>
 
     <script>
-        const fadeOutTime = 2000; 
-        const alertDiv = document.querySelector('.alert');
+        // نمایش/مخفی کردن رمز عبور
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.querySelector('.toggle-password i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // محو شدن خودکار پیغام‌ها پس از 5 ثانیه
         setTimeout(() => {
-            alertDiv.classList.add('fade-out');
-        }, fadeOutTime);
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
     </script>
 </body>
 </html>

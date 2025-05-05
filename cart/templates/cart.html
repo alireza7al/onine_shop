@@ -8,6 +8,8 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <!-- اضافه کردن SweetAlert برای پیغام زیبا -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 {% endblock head%}
 
 {% block content %}
@@ -15,43 +17,43 @@
         <div class="cart-container">
             <h1>سبد خرید شما</h1>
             <ul id="cart-items">
-                <!-- محصولات اینجا نمایش داده می‌شوند -->
                 {% for item in cart_items %}
                     <li data-product-id="{{ item.product.id }}">
-
                         <div class="product-info">
                             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                         </div>
 
-                            <div class="product-details">
-                                <div class="container_name">
-                                    <span class="name">{{ item.product.name }}</span>
-                                </div>
-
-                                {% if item.product.sale_price %}
-                                <div class="container2">
-                                    <span class="old_price_cart">{{ item.product.price | intcomma }} تومان</span>
-                                    <span class="new_price_cart">{{ item.product.sale_price | intcomma }} تومان</span>
-                                </div>
-                                {% else %}
-                                <div class="container2">
-                                    <span class="new_price_cart">{{ item.product.price | intcomma }} تومان</span>
-                                </div>
-                                {% endif %}
-
-                                <div class="container2">
-                                    <span class="quantity">تعداد: {{ item.quantity }}</span>
-                                    <span id="price">مبلغ: {{ item.sum_quantity_price|intcomma}}</span>
-                                </div>
+                        <div class="product-details">
+                            <div class="container_name">
+                                <span class="name">{{ item.product.name }}</span>
                             </div>
+
+                            {% if item.product.sale_price %}
+                            <div class="container2">
+                                <span class="old_price_cart">{{ item.product.price | intcomma }} تومان</span>
+                                <span class="new_price_cart">{{ item.product.sale_price | intcomma }} تومان</span>
+                            </div>
+                            {% else %}
+                            <div class="container2">
+                                <span class="new_price_cart">{{ item.product.price | intcomma }} تومان</span>
+                            </div>
+                            {% endif %}
+
+                            <div class="container2">
+                                <span class="quantity">تعداد: {{ item.quantity }}</span>
+                                <span id="price">مبلغ: {{ item.sum_quantity_price|intcomma }}</span>
+                            </div>
+                        </div>
 
                         <button data-product-id="{{ item.product.id }}" onclick="removeFromCart({{ item.product.id }})">حذف</button>
                     </li>
                 {% endfor %}
             </ul>
             <div class="cart-summary">
-                <p class="total_price">جمع کل: <span id="total_price" class>{{ total_price|intcomma }}</span> تومان</p>
-                <a href="{% url 'payment:create_shipping_address' %}"><button id="checkout-btn">پرداخت</button></a>
+                <p class="total_price">جمع کل: <span id="total_price">{{ total_price|intcomma }}</span> تومان</p>
+                <a href="{% if request.user.is_authenticated %}{% url 'payment:create_shipping_address' %}{% else %}#{% endif %}">
+                    <button id="checkout-btn">پرداخت</button>
+                </a>
             </div>
         </div>
     </div>
@@ -59,77 +61,105 @@
 
 {% block js %}
     <script src="{% static 'js/cart.js' %}"></script>
-<script>
-// تابع برای خواندن کوکی‌ها
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+    <!-- اضافه کردن SweetAlert برای نمایش پیغام -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // تابع برای خواندن کوکی‌ها
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // تابع حذف از سبد خرید
+        async function removeFromCart(productId) {
+            if (!productId) {
+                alert("محصولی برای حذف یافت نشد!");
+                return;
+            }
+
+            const button = document.querySelector(`button[data-product-id="${productId}"]`);
+            button.disabled = true;
+            button.textContent = "در حال حذف...";
+
+            try {
+                const response = await fetch('{% url 'cart:delete' %}', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: `product_id=${productId}`
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const item = document.querySelector(`li[data-product-id="${productId}"]`);
+                    if (item) {
+                        item.remove();
+                    }
+
+                    const totalPriceElement = document.getElementById('total_price');
+                    if (totalPriceElement) {
+                        totalPriceElement.textContent = new Intl.NumberFormat().format(data.total_price);
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'حذف شد!',
+                        text: 'محصول از سبد خرید حذف شد.',
+                        confirmButtonText: 'باشه'
+                    });
+                } else {
+                    throw new Error('Error deleting product');
+                }
+            } catch (error) {
+                console.error("خطا در حذف محصول:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا!',
+                    text: 'مشکلی در حذف محصول رخ داده است!',
+                    confirmButtonText: 'متوجه شدم'
+                });
+            } finally {
+                button.disabled = false;
+                button.textContent = "حذف";
             }
         }
-    }
-    return cookieValue;
-}
 
-async function removeFromCart(productId) {
-    if (!productId) {
-        alert("محصولی برای حذف یافت نشد!");
-        return;
-    }
+        // بررسی لاگین هنگام کلیک روی دکمه پرداخت
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkoutBtn = document.getElementById('checkout-btn');
 
-    const button = document.querySelector(`button[data-product-id="${productId}"]`);
-    button.disabled = true;
-    button.textContent = "در حال حذف...";
-
-    try {
-        const response = await fetch('{% url 'cart:delete' %}', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: `product_id=${productId}`
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', function(e) {
+                    {% if not request.user.is_authenticated %}
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'نیاز به ورود',
+                            text: 'برای پرداخت، لطفاً ابتدا وارد حساب کاربری خود شوید.',
+                            confirmButtonText: 'ورود',
+                            showCancelButton: true,
+                            cancelButtonText: 'انصراف'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const nextUrl = "{% url 'payment:create_shipping_address' %}";
+                                window.location.href = `{% url 'user:login' %}?next=${nextUrl}`;
+                            }
+                        });
+                    {% endif %}
+                });
+            }
         });
-
-        if (response.ok) {
-            const data = await response.json();
-
-            // حذف آیتم از DOM
-            const item = document.querySelector(`li[data-product-id="${productId}"]`);
-            if (item) {
-                item.remove();
-            }
-
-            // به‌روزرسانی جمع کل با فرمت‌بندی جاوااسکریپت
-            const totalPriceElement = document.getElementById('total_price');
-            if (totalPriceElement) {
-                totalPriceElement.textContent = intcomma(data.total_price);  // فرمت‌بندی با تابع intcomma
-            }
-
-            // نمایش پیام موفقیت‌آمیز
-            alert("محصول با موفقیت حذف شد.");
-        } else {
-            throw new Error('Error deleting product');
-        }
-    } catch (error) {
-        console.error("خطا در حذف محصول:", error);
-        alert("مشکلی در حذف محصول رخ داده است!");
-    } finally {
-        button.disabled = false;
-        button.textContent = "حذف";
-    }
-}
-
-// تابع فرمت‌بندی اعداد به صورت هر سه رقمی
-function intcomma(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-</script>
+    </script>
 {% endblock %}

@@ -45,8 +45,12 @@ INSTALLED_APPS = [
 
     # for payment
     "azbankgateways",
-    "comment.apps.CommentConfig"
+    "comment.apps.CommentConfig",
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MERCHANT_ID = "aaaaaaaaaabbbbbbbbbbcccccccccc123456"
 AZ_IRANIAN_BANK_GATEWAYS = {
@@ -164,3 +168,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+

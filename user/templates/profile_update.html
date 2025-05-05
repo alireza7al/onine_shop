@@ -1,57 +1,314 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ویرایش پروفایل</title>
-    <link rel="stylesheet" href="{% static 'css/singup2.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>تکمیل پروفایل کاربری</title>
+    <!-- فونت Vazir از CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <!-- آیکون‌های Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* استایل‌های پایه */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazir', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* کارت اصلی */
+        .profile-card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* هدر کارت */
+        .profile-header {
+            background: linear-gradient(135deg, #6e8efb 0%, #4a6cf7 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin: 0 auto 15px;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar i {
+            font-size: 2rem;
+            color: #777;
+        }
+
+        /* بدنه فرم */
+        .profile-body {
+            padding: 25px;
+        }
+
+        /* پیغام‌ها */
+        .alert-messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .alert i {
+            margin-left: 8px;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* گروه‌های فرم */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* دکمه‌ها */
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a5ce4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9e9e9;
+        }
+
+        /* بخش فوتر */
+        .profile-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* واکنشگرایی */
+        @media (max-width: 576px) {
+            .profile-card {
+                max-width: 100%;
+            }
+
+            .profile-header {
+                padding: 20px;
+            }
+
+            .profile-body {
+                padding: 20px;
+            }
+
+            .profile-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="parent">
-    <div class="alert">
-        {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-        {% endif %}
-    </div>
-
-    <div class="wrapper">
-        <div class="shape shape--one"></div>
-        <div class="shape shape--two"></div>
-        <form method="POST" action="{% url 'user:profile_update' %}" class="form">
-            {% csrf_token %}
-            <h2 class="form__title">ویرایش پروفایل</h2>
-            {% for field in form %}
-            <div class="form__input-wrapper">
-                <label for="{{ field.id_for_label }}" class="form__label">{{ field.label }}</label>
-                {{ field }}
-                <div class="error"></div>
-                {% if field.help_text %}
-                    <div class="help-text">
-                        {{ field.help_text }}
-                    </div>
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="تصویر پروفایل">
+                {% else %}
+                    <i class="fas fa-user"></i>
                 {% endif %}
             </div>
-            {% endfor %}
-            <button type="submit" class="form__submit-btn">ذخیره تغییرات</button>
-        </form>
+            <h1>تکمیل پروفایل کاربری</h1>
+        </div>
 
-        <!-- دکمه ویرایش رمز عبور -->
-        <div class="form__password-update">
-            <a href="{% url 'user:update_password' %}" class="form__password-update-btn">ویرایش رمز عبور</a>
+        <div class="profile-body">
+            <!-- نمایش پیغام‌ها -->
+            {% if messages %}
+            <div class="alert-messages">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- فرم ویرایش پروفایل -->
+            <form method="POST" action="{% url 'user:profile_update' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="help-text">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="error-message">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> ذخیره تغییرات
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-footer">
+            <a href="{% url 'user:update_password' %}" class="btn btn-secondary">
+                <i class="fas fa-key"></i> تغییر رمز عبور
+            </a>
+            <a href="{% url 'shop:home' %}" class="btn btn-secondary">
+                <i class="fas fa-home"></i> بازگشت به خانه
+            </a>
         </div>
     </div>
-</div>
-    <script>
-        const fadeOutTime = 2000;
-        const alertDiv = document.querySelector('.alert');
-        setTimeout(() => {
-            alertDiv.classList.add('fade-out');
-        }, fadeOutTime);
-    </script>
 
+    <script>
+        // محو شدن خودکار پیغام‌ها پس از 5 ثانیه
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
+
+        // پیش‌نمایش تصویر آواتار
+        const avatarInput = document.querySelector('input[type="file"]');
+        if (avatarInput) {
+            avatarInput.addEventListener('change', function(e) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.querySelector('.profile-avatar img').src = event.target.result;
+                    document.querySelector('.profile-avatar i').style.display = 'none';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            });
+        }
+    </script>
 </body>
 </html>

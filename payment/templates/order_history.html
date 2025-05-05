@@ -1,47 +1,137 @@
 {% extends 'parts/base.html' %}
 {% load humanize %}
-{% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">تاریخچه سفارشات</h2>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover text-center">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">شماره سفارش</th>
-                    <th scope="col">تاریخ سفارش</th>
-                    <th scope="col">مبلغ کل</th>
-                    <th scope="col">وضعیت پرداخت</th>
-                    <th scope="col">جزئیات</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.created_at|date:"Y/m/d H:i" }}</td>
-                    <td>{{ order.total_price|intcomma }} تومان</td>
-                    <td>
-                        {% if order.is_paid %}
-                        <span class="badge bg-success">پرداخت شده</span>
-                        {% else %}
-                        <span class="badge bg-danger">پرداخت نشده</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'payment:order_detail' order.id %}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-eye"></i> مشاهده جزئیات
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">هیچ سفارشی یافت نشد.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
 
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-history me-2 text-primary"></i>
+            تاریخچه سفارشات
+        </h2>
+        <span class="badge bg-secondary">
+            {{ orders.count }} سفارش
+        </span>
+    </div>
+
+    <div class="card border-0 shadow-lg">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="15%">شماره سفارش</th>
+                            <th width="20%">تاریخ سفارش</th>
+                            <th width="20%">مبلغ کل</th>
+                            <th width="25%">وضعیت</th>
+                            <th width="20%">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td class="fw-bold">#{{ order.id }}</td>
+                            <td>
+                                {{ order.created_at|date:"Y/m/d" }}
+                                <small class="text-muted d-block">{{ order.created_at|date:"H:i" }}</small>
+                            </td>
+                            <td class="fw-bold">{{ order.total_price|intcomma }} تومان</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge
+                                        {% if order.status == 'paid' %}bg-success
+                                        {% elif order.status == 'canceled' %}bg-danger
+                                        {% else %}bg-warning{% endif %} me-2">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                    {% if order.is_paid %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-{{ order.payment_method|yesno:'wallet,credit-card' }} me-1"></i>
+                                        {{ order.get_payment_method_display }}
+                                    </small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <a href="{% url 'payment:order_detail' order.id %}"
+                                       class="btn btn-sm btn-outline-primary me-2"
+                                       data-bs-toggle="tooltip"
+                                       title="مشاهده جزئیات">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if not order.is_paid %}
+                                    <a href="{% url 'payment:choose_payment_method' order.id %}"
+                                       class="btn btn-sm btn-success"
+                                       data-bs-toggle="tooltip"
+                                       title="پرداخت سفارش">
+                                        <i class="fas fa-credit-card"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                <div class="text-muted">
+                                    <i class="fas fa-box-open fa-3x mb-3"></i>
+                                    <h5 class="mb-2">سفارشی یافت نشد</h5>
+                                    <p class="mb-0">هنوز هیچ سفارشی ثبت نکرده‌اید</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحه‌بندی -->
+    {% if is_paginated %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// فعال کردن tooltip‌ها
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})
+</script>
 {% endblock %}
